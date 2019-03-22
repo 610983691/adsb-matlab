@@ -1,5 +1,5 @@
 
-function plane_tj(lon,lat,high_num,speed,power,fxj,simu_time)
+function[plane_lon,plane_lat,plane_high,plane] = plane_tj(lon,lat,high_num,speed,power,fxj,simu_time)
 
 simu_step =1e-3;%s
 ratio = 6371;%KM
