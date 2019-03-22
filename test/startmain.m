@@ -157,14 +157,11 @@ end
 
 close % 这个是关闭当前输入参数的界面
 
-%下面测试画一个正弦波，查看上面的关闭是否正确
-x=0:0.01:10;
-y=sin(x);
-plot(x,y);
+
 
 % 接下来应该调用正常的飞机轨迹函数
 
-
+plane_tj(input_lon,input_lat,input_high,input_speed,input_gl,input_hxj,input_time)
 % 飞机轨迹函数调用完成
 
 
