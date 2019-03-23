@@ -1,0 +1,105 @@
+##################################################################################
+#										 #
+# Plane parameter configuration file for multiple aircraft simulation programme. #
+# Please do not modify the format of the file. You can add the plane number as   #
+# follows:									 #
+# #Parameter settings for plane x. #						 #
+# ICAO number:XXXXXXXX								 #
+# Flight number:YYYYYYYY							 #
+# Transmit power(W):AAA								 #
+# Maximum frequency error(Hz):BBBBBB						 #
+# Start Altitude(North, degree):NNNNNN						 #
+# Start Longtitude(East, degree):EEEEE						 #
+# Flying Altitude(m):FFFFFF							 #
+# Horizontal velocity(km/h):VVVVV						 #
+# Horizontal azimuth(degree):ZZZZ						 #
+#										 #
+##################################################################################
+
+$ Parameter settings for plane 1. $
+ICAO number:1
+Flight number:CHN1111
+Transmit power(W):500
+Maximum frequency error(Hz):100000
+Start Altitude(North, degree):30.0086
+Start Longtitude(East, degree):102.714
+Flying Altitude(m):7100
+Horizontal velocity(km/h):641.217
+Horizontal azimuth(degree):175
+
+$ Parameter settings for plane 2. $
+ICAO number:2
+Flight number:CHN2222
+Transmit power(W):500
+Maximum frequency error(Hz):100000
+Start Altitude(North, degree):31.1922
+Start Longtitude(East, degree):105.901
+Flying Altitude(m):5028
+Horizontal velocity(km/h):619.067
+Horizontal azimuth(degree):156
+
+$ Parameter settings for plane 3. $
+ICAO number:3
+Flight number:CHN3333
+Transmit power(W):500
+Maximum frequency error(Hz):100000
+Start Altitude(North, degree):29.5917
+Start Longtitude(East, degree):105.481
+Flying Altitude(m):8492
+Horizontal velocity(km/h):650.575
+Horizontal azimuth(degree):160
+
+$ Parameter settings for plane 4. $
+ICAO number:4
+Flight number:CHN4444
+Transmit power(W):500
+Maximum frequency error(Hz):100000
+Start Altitude(North, degree):29.7239
+Start Longtitude(East, degree):103.27
+Flying Altitude(m):6262
+Horizontal velocity(km/h):599.344
+Horizontal azimuth(degree):110
+
+$ Parameter settings for plane 5. $
+ICAO number:5
+Flight number:CHN5555
+Transmit power(W):500
+Maximum frequency error(Hz):100000
+Start Altitude(North, degree):30.8206
+Start Longtitude(East, degree):102.736
+Flying Altitude(m):4805
+Horizontal velocity(km/h):673.027
+Horizontal azimuth(degree):183
+
+$ Parameter settings for plane 6. $
+ICAO number:6
+Flight number:CHN6666
+Transmit power(W):500
+Maximum frequency error(Hz):100000
+Start Altitude(North, degree):31.4317
+Start Longtitude(East, degree):104.817
+Flying Altitude(m):9512
+Horizontal velocity(km/h):513.606
+Horizontal azimuth(degree):183
+
+$ Parameter settings for plane 7. $
+ICAO number:7
+Flight number:CHN7777
+Transmit power(W):500
+Maximum frequency error(Hz):100000
+Start Altitude(North, degree):31.9778
+Start Longtitude(East, degree):103.472
+Flying Altitude(m):9007
+Horizontal velocity(km/h):693.709
+Horizontal azimuth(degree):294
+
+$ Parameter settings for plane 8. $
+ICAO number:8
+Flight number:CHN8888
+Transmit power(W):500
+Maximum frequency error(Hz):100000
+Start Altitude(North, degree):30.701
+Start Longtitude(East, degree):103.36
+Flying Altitude(m):6401
+Horizontal velocity(km/h):519.751
+Horizontal azimuth(degree):286
