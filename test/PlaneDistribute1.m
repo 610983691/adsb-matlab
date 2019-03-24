@@ -8,3 +8,4 @@ function plane = PlaneDistribute1(N)
     plane(5,i) = rand()*360*pi/180;
     plane(6,i) = rand()*30-115;%dnm
   end
+end

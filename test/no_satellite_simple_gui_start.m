@@ -48,20 +48,20 @@ classdef no_satellite_simple_gui_start < handle
         
         % Text handle for plane param, Lattitude, Longtitude, and height.
         plane_txt_lat1,plane_txt_lat2,plane_txt_lat3;
-        plane_edt_lat1, plane_edt_lat2, plane_edt_lat3;
+        plane_edt_lat1, plane_edt_lat2, plane_edt_lat3;%维度
         plane_txt_lon1,plane_txt_lon2,plane_txt_lon3;
-        plane_edt_lon1, plane_edt_lon2, plane_edt_lon3;
+        plane_edt_lon1, plane_edt_lon2, plane_edt_lon3;%经度
         plane_txt_alt1,plane_txt_alt2,plane_txt_alt3;
-        plane_edt_alt1,plane_edt_alt2,plane_edt_alt3;
+        plane_edt_alt1,plane_edt_alt2,plane_edt_alt3;%高度
         % Text handle for plane velocity, and azimuth.
         plane_txt_vh1,plane_txt_vh2,plane_txt_vh3;
-        plane_edt_vh1,plane_edt_vh2,plane_edt_vh3;
+        plane_edt_vh1,plane_edt_vh2,plane_edt_vh3;%速度
         plane_txt_az1,plane_txt_az2,plane_txt_az3;
-        plane_edt_az1,plane_edt_az2,plane_edt_az3;
+        plane_edt_az1,plane_edt_az2,plane_edt_az3;%航向角
         
         
         plane_txt_pw1,plane_txt_pw2,plane_txt_pw3;
-        plane_edt_pw1,plane_edt_pw2,plane_edt_pw3;
+        plane_edt_pw1,plane_edt_pw2,plane_edt_pw3;%功率
 
         
         
@@ -458,39 +458,21 @@ classdef no_satellite_simple_gui_start < handle
         
         % Callback function for button start.
         function button_start_callback(obj, source, eventdata)
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
+          
+            check = check_plane_num_times(obj)
+            
+            if check==0
+                return
             end
-            
-            if isempty(get(obj.plane_edt_times, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
-                return;
-            end
-            
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 100
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 100]，请重新设置！');
-                return;
-            end
-            
-            ftime = str2double(get(obj.plane_edt_times, 'string'));
-            if isnan(ftime)
-                set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
-                return;
-            elseif ftime <= 0 || ftime > 60
-                set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
-                return;
-            end
-            
-           
-            
+            check_plane1= check_plane_1(obj);
+
+              lat1=str2double(get(obj.plane_edt_lat1, 'string'));
+            lon1=str2double(get(obj.plane_edt_lon1, 'string'));
+            high1=str2double(get(obj.plane_edt_alt1, 'string'));
+            speed1=str2double(get(obj.plane_edt_vh1, 'string'));
+            hxj1=str2double(get(obj.plane_edt_az1, 'string'));
+            power1=str2double(get(obj.plane_edt_pw1, 'string'));
+            plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
           
             
          
@@ -562,6 +544,88 @@ classdef no_satellite_simple_gui_start < handle
             clc;
         end
         
+        function s= check_plane_num_times(obj)
+            s=0;
+            if isempty(get(obj.plane_num_edt, 'string'))
+                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
+                return ;
+            end
+            
+            if isempty(get(obj.plane_edt_times, 'string'))
+                set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
+                return ;
+            end
+            
+            fnum = str2double(get(obj.plane_num_edt, 'string'));
+            if isnan(fnum)
+                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
+                return ;
+            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
+                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
+                return;
+            elseif fnum <= 0 || fnum > 100
+                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 100]，请重新设置！');
+                return ;
+            end
+            
+            ftime = str2double(get(obj.plane_edt_times, 'string'));
+            if isnan(ftime)
+                set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
+                return ;
+            elseif ftime <= 0 || ftime > 60
+                set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
+                return ;
+            end
+            s=1;
+            return ;
+        end
+        
+        function s = check_plane_1(obj)
+            s=0;
+            lat1=str2double(get(obj.plane_edt_lat1, 'string'));
+            lon1=str2double(get(obj.plane_edt_lon1, 'string'));
+            high1=str2double(get(obj.plane_edt_alt1, 'string'));
+            speed1=str2double(get(obj.plane_edt_vh1, 'string'));
+            hxj1=str2double(get(obj.plane_edt_az1, 'string'));
+            power1=str2double(get(obj.plane_edt_pw1, 'string'));
+            if is_err_lat(lat1)
+                set(obj.edt_echo, 'string', '设置的飞机1纬度度超出范围，应为[-90, 90]，请重新设置！');
+                return;
+            end
+             if is_err_lon(lon1)
+                set(obj.edt_echo, 'string', '设置的飞机1经度超出范围，应为[-180, 180]，请重新设置！');
+                return;
+             end
+             if is_err_high(high1)
+                set(obj.edt_echo, 'string', '设置的飞机1高度空层超出范围，应为[1, 12]，请重新设置！');
+                return;
+             end
+             if is_err_speed(speed1)
+                set(obj.edt_echo, 'string', '设置的飞机1速度超出范围，应为[800, 1000]，请重新设置！');
+                return;
+             end
+             if is_err_hxj(hxj1)
+                set(obj.edt_echo, 'string', '设置的飞机1航向角超出范围，应为[0, 360]，请重新设置！');
+                return;
+             end
+             if is_err_gl(power1)
+                set(obj.edt_echo, 'string', '设置的飞机1功率超出范围，应为[0, 100]，请重新设置！');
+                return;
+             end
+            s=1;
+        end
+        
+        function plane = createPlane(obj,lon,lat,high,speed,hxj,power)
+                plane = zeros(6,1);
+ 
+                plane(1,1) = lon;
+                plane(2,1) = lat;
+                plane(3,1) = (high-1)*0.3+8.4+(rand()*2-1)*0.02;
+                plane(4,1) = speed;
+                plane(5,1) = hxj;
+                plane(6,1) = power;%dnm
+
+        end
         
         function callback_mapping(obj)
           
