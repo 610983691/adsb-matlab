@@ -444,16 +444,16 @@ classdef no_satellite_simple_gui_start < handle
                 return;
             end
             % 接下来需要调用随机方法生成随机的飞机信息矩阵
+            set(obj.edt_echo, 'string', '正在进行仿真...');
+  
+            planes= PlaneDistribute1(fnum);
             
             
             % 接下来调用紫童的方法传递参数，进行仿真
-      
+            set(obj.edt_echo, 'string', '仿真结束');
           
         end
         
-      
-       
-     
         
         % Callback function for button start.
         function button_start_callback(obj, source, eventdata)
@@ -474,8 +474,8 @@ classdef no_satellite_simple_gui_start < handle
             elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
                 set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
                 return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
+            elseif fnum <= 0 || fnum > 100
+                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 100]，请重新设置！');
                 return;
             end
             
@@ -488,55 +488,16 @@ classdef no_satellite_simple_gui_start < handle
                 return;
             end
             
-            if obj.cb_auto_config == 0 && obj.cb_man_config == 0
-                set(obj.edt_echo, 'string', '尚未配置飞机参数，请先配置飞机参数！');
-                return;
-            end
+           
             
-            if obj.cb_man_config == 1
-                check_plane_param(obj);
-                if obj.ppc == 1
-                    obj.ppc = 0;
-                    return;
-                end
-            end
+          
             
-            obj.ppc = 0;
-            obj.cb_man_config = 0;
-            obj.cb_auto_config = 0;
-            
-            % Check the receiver parameter.
-            check_rcv_param(obj);
-            if obj.rpc == 1
-                obj.rpc = 0;
-                return;
-            end
-            
-            obj.rpc = 0;
-            
-            ip_addr = get(obj.ip_edt, 'string');
-            if isempty(ip_addr)
-                set(obj.edt_echo, 'string', '请先设置E4438C的IP地址！');
-                return;
-            end
-            
-            if obj.ip_tst == 0
-                set(obj.edt_echo, 'string', '尚未进行网络连通测试，请先进行网络连通测试！');
-                return;
-            elseif obj.ip_tst == -1
-                obj.ip_tst = 0;
-                set(obj.edt_echo, 'string', '请检查您的网络连接以及E4438的LAN配置！');
-                return;
-            end
+         
             
             set(obj.edt_echo, 'string', '正在运行“多架飞机ADS-B信号模拟程序”...');
             pause(0.3);
             
-            % Init the receiver struct.
-            rcvPosition = [str2double(get(obj.rcv_edt_lat, 'string')), ...
-                str2double(get(obj.rcv_edt_lon, 'string')), ...
-                str2double(get(obj.rcv_edt_alt, 'string'))];
-            receiver = Receiver(rcvPosition, 0, 0);
+     
             
             % Obtain the simulation time.
             durationTime = str2double(get(obj.plane_edt_times, 'string'));
@@ -585,17 +546,7 @@ classdef no_satellite_simple_gui_start < handle
                 'fgt_num', fight_num, ...
                 'frqoffset' ,[-feq_err; feq_err] ...
                 );
-            planeFactory = PlaneFactory(planeGenParameter);
-            planes = planeFactory.buildPlanes(fnum);
-            
-            adsbMsgs=Msg1090Factory.buildMessages(planes,durationTime);
-            receiver.receiveMessages(adsbMsgs);
-            
-            waveDownloader=WaveDownloader(durationTime);
-            waveDownloader.downloadMessages(adsbMsgs );
-
-            waveDownloader.ip4438 = ip_addr;
-            waveDownloader.playWave(0, 0);
+       
             
             set(obj.edt_echo, 'string', '“多架飞机ADS-B信号模拟程序”运行完毕！');
         end
@@ -610,7 +561,6 @@ classdef no_satellite_simple_gui_start < handle
             clc;
         end
         
-      
         
         function callback_mapping(obj)
           
@@ -623,7 +573,6 @@ classdef no_satellite_simple_gui_start < handle
             set(obj.btn_c2, 'callback', @obj.button_exit_callback);
            
         end
-        
         
         
         function check_plane_param(obj)
@@ -775,5 +724,6 @@ classdef no_satellite_simple_gui_start < handle
                 end
             end
         end
+        
     end
 end
