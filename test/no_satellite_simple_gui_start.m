@@ -416,42 +416,15 @@ classdef no_satellite_simple_gui_start < handle
         
         % Callback function for automatic configuration button.
         function result =button_auto_config_callback(obj, source, eventdata)
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
-            end
-            
-            if isempty(get(obj.plane_edt_times, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
-                return;
-            end
-            
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 100
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 100]，请重新设置！');
-                return;
-            end
-            
+           if check_plane_num_times(obj)==0
+                return ;
+           end
             ftime = str2double(get(obj.plane_edt_times, 'string'));
-            if isnan(ftime)
-                set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
-                return;
-            elseif ftime <= 0 || ftime > 60
-                set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
-                return;
-            end
+            fnum = str2double(get(obj.plane_num_edt, 'string'));
             % 接下来需要调用随机方法生成随机的飞机信息矩阵
             set(obj.edt_echo, 'string', '正在进行仿真...');
   
             planes= PlaneDistribute1(fnum);
-            
-
             set(obj.edt_echo, 'string', '正在进行仿真...');
             % 接下来调用紫童的方法传递参数，进行仿真
             [result_lon,result_lat,result_high] =no_satellite_simple_main(planes,ftime);
@@ -459,7 +432,6 @@ classdef no_satellite_simple_gui_start < handle
              obj.plane_lat_result=result_lat;
              obj.plane_high_result=result_high;
             set(obj.edt_echo, 'string', '仿真结束');
-          
         end
         
         
@@ -492,19 +464,23 @@ classdef no_satellite_simple_gui_start < handle
             speed3=str2double(get(obj.plane_edt_vh3, 'string'));
             hxj3=str2double(get(obj.plane_edt_az3, 'string'));
             power3=str2double(get(obj.plane_edt_pw3, 'string'));
-            
-          
 
             % 校验飞机1参数
             if check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,'一')==0
                 return ;
             end
+            lon1=lon1+180;
+            lat1=lat1+90;
+            hxj1=hxj1*pi/180;
              plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
              %飞机2不为空,就需要校验参数，并且把参数合并到飞机1.2中
             if ~plane2isempty(obj)
                 if check_plane_1(obj,lon2,lat2,high2,speed2,hxj2,power2,'二')==0
                     return ;
                 else
+                    lon2=lon2+180;
+                    lat2=lat2+90;
+                    hxj2=hxj2*pi/180;
                     plane2 = createPlane(obj,lon2,lat2,high2,speed2,hxj2,power2);
                 end
             end
@@ -514,6 +490,9 @@ classdef no_satellite_simple_gui_start < handle
                  if check_plane_1(obj,lon3,lat3,high3,speed3,hxj3,power3,'三')==0
                     return ;
                  else
+                     lon3=lon3+180;
+                    lat3=lat3+90;
+                    hxj3=hxj3*pi/180;
                     plane3 = createPlane(obj,lon3,lat3,high3,speed3,hxj3,power3);
                 end
             end
@@ -675,7 +654,7 @@ classdef no_satellite_simple_gui_start < handle
             s=1;
         end
         
-        %创建随机的飞机位置
+        %创建飞机信息
         function plane = createPlane(obj,lon,lat,high,speed,hxj,power)
                 plane = zeros(6,1);
  
