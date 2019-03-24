@@ -394,129 +394,14 @@ classdef no_satellite_simple_gui_start < handle
                 'Fontsize', 15, 'position', [floor((obj.gui_width - 450) / 2) + 250, ...
                 30, 150, 50]);
             
-            % Create echo info window.
-            obj.txt_echo = uicontrol('parent', obj.gui_p, 'style', ...
-                'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 12, ...
-                'string','程序状态信息','position',[25 ...
-                obj.panel_height - 225 ...
-                100 50]);
-            obj.edt_echo = uicontrol('parent', obj.gui_p, 'style', ...
-                'edit', 'BackgroundColor','white' ...
-              ,'Fontsize',11,'position',[130 ...
-              obj.panel_height - 210 500 50]);
-          
-        
+     
             
             % Mapping to the callback function.
             callback_mapping(obj);
         end
         
-        % Callback function for look up button.
-        function button_lookup_callback(obj, source, eventdata)
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
-            end
-            
-            if isempty(get(obj.plane_info_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未输入飞机编号，请输入飞机编号后再查询配置信息！');
-                return;
-            end
-            
-            plane_index = str2double(get(obj.plane_info_edt, 'string'));
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
-                return;
-            end
-            
-            if isnan(plane_index)
-                set(obj.edt_echo, 'string', '输入的飞机编号中包含非法字符，应为正整数，请重新输入！');
-                return;
-            elseif ~isempty(find(get(obj.plane_info_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif plane_index <= 0 || plane_index > fnum
-                set(obj.edt_echo, 'string', ['输入的飞机编号超出范围,应为(0, ', num2str(fnum), ']，请重新输入！']);
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', ['正在查询飞机', num2str(plane_index), ...
-                '的配置信息，请稍等...']);
-            pause(0.4);
-            
-            set(obj.plane_edt_icao, 'string', obj.plane_info{plane_index, 1}.icao);
-            set(obj.plane_edt_fgt, 'string', obj.plane_info{plane_index, 1}.fgt_num);
-            set(obj.plane_edt_pw, 'string', obj.plane_info{plane_index, 1}.power);
-            set(obj.plane_edt_feq, 'string', obj.plane_info{plane_index, 1}.feq_err);
-            set(obj.plane_edt_lat, 'string', obj.plane_info{plane_index, 1}.st_lat);
-            set(obj.plane_edt_lon, 'string', obj.plane_info{plane_index, 1}.st_lon);
-            set(obj.plane_edt_alt, 'string', obj.plane_info{plane_index, 1}.st_alt);
-            set(obj.plane_edt_vh, 'string', obj.plane_info{plane_index, 1}.vh);
-            set(obj.plane_edt_az, 'string', obj.plane_info{plane_index, 1}.az);
-            
-            set(obj.edt_echo, 'string', ['飞机', num2str(plane_index), '的配置信息查询完毕，见“飞机参数设置区”！']);
-        end
-        
-        % Callback function for saving configuration button.
-        function button_save_config_callback(obj, source, eventdata)
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
-            end
-            
-            if isempty(get(obj.plane_info_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未输入飞机编号，请输入飞机编号后再查询配置信息！');
-                return;
-            end
-            
-            plane_index = str2double(get(obj.plane_info_edt, 'string'));
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
-                return;
-            end
-            
-            if isnan(plane_index)
-                set(obj.edt_echo, 'string', '输入的飞机编号中包含非法字符，应为正整数，请重新输入！');
-                return;
-            elseif ~isempty(find(get(obj.plane_info_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif plane_index <= 0 || plane_index > fnum
-                set(obj.edt_echo, 'string', ['输入的飞机编号超出范围,应为(0, ', num2str(fnum), ']，请重新输入！']);
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', ['正在保存飞机', num2str(plane_index), ...
-                '的配置信息，请稍等...']);
-            pause(0.4);
-            
-            obj.plane_info{plane_index, 1}.icao = str2double(get(obj.plane_edt_icao, 'string'));
-            obj.plane_info{plane_index, 1}.fgt_num = get(obj.plane_edt_fgt, 'string');
-            obj.plane_info{plane_index, 1}.power = str2double(get(obj.plane_edt_pw, 'string'));
-            obj.plane_info{plane_index, 1}.feq_err = str2double(get(obj.plane_edt_feq, 'string'));
-            obj.plane_info{plane_index, 1}.st_lat = str2double(get(obj.plane_edt_lat, 'string'));
-            obj.plane_info{plane_index, 1}.st_lon = str2double(get(obj.plane_edt_lon, 'string'));
-            obj.plane_info{plane_index, 1}.st_alt = str2double(get(obj.plane_edt_alt, 'string'));
-            obj.plane_info{plane_index, 1}.vh = str2double(get(obj.plane_edt_vh, 'string'));
-            obj.plane_info{plane_index, 1}.az = str2double(get(obj.plane_edt_az, 'string'));
-            
-            set(obj.edt_echo, 'string', ['飞机', num2str(plane_index), ...
-                '的配置信息保存完毕！']);
-        end
+     
+      
         
         % Callback function for automatic configuration button.
         function button_auto_config_callback(obj, source, eventdata)
@@ -573,107 +458,9 @@ classdef no_satellite_simple_gui_start < handle
             obj.cb_auto_config = 1;
         end
         
-        % Callback function for select configuration file button.
-        function button_config_file_callback(obj, source, eventdata)
-            set(obj.edt_echo, 'string', '正在选取飞机参数配置文件...');
-            
-            % Select the position of the configuration file.
-%             iflag = 1;
-%             while iflag == 1 
-            [filename, pathname] = uigetfile({'*.*txt';'*.*'},'选择飞机参数配置文件');
-            if isequal(filename, 0)
-                set(obj.edt_echo, 'string', '您尚未选择任何配置文件，请选择！');
-                return;
-%                 iflag = 1;
-            else
-                obj.config_path = [pathname, filename];
-%                     iflag = 0;
-            end     % if isequal(filename,0)
-%             end     % while iflag == 1
-            
-%             work_path = pwd;
-%             rel_path = ['..', obj.config_path(length(work_path) + 1 : end)];
-            set(obj.edt_echo, 'string', '配置文件选择已完成，可在“飞机参数配置文件”中查看配置文件路径！');
-            set(obj.config_edt, 'string', obj.config_path);
-        end
-        
-        % Callback function for configuration button.
-        function button_config_callback(obj, source, eventdata)
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
-            end
-            
-            if isempty(get(obj.plane_tm_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
-                return;
-            end
-            
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
-                return;
-            end
-            
-            ftime = str2double(get(obj.plane_tm_edt, 'string'));
-            if isnan(ftime)
-                set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
-                return;
-            elseif ftime <= 0 || ftime > 60
-                set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', '正在读取配置文件，配置飞机参数，请稍等...');
-            pause(0.4);
-            
-            obj.plane_info = init_plane_info(fnum);
-            [obj, fnum_real] = read_config_file(obj, fnum);
-            if fnum_real <= fnum
-                set(obj.edt_echo, 'string', ['总共完成', num2str(fnum_real), ...
-                    '架飞机参数的配置，可通过输入飞机编号查询对应的配置信息！']);
-                set(obj.plane_num_edt, 'string', num2str(fnum_real));
-            else
-                set(obj.edt_echo, 'string', ['总共完成', num2str(fnum), ...
-                    '架飞机参数的配置，可通过输入飞机编号查询对应的配置信息！']);
-                set(obj.plane_num_edt, 'string', num2str(fnum));
-            end
-            
-            obj.cb_man_config = 1;
-        end
-        
-        % Callback function for button receiver.
-        function button_receiver_callback(obj, source, eventdata)
-            % Check the first char.
-            ct_name = get(obj.rcv_edt_city, 'string');
-            if isempty(ct_name)
-                set(obj.edt_echo, 'string', '请先输入城市名拼音，如Shanghai，再获取经纬度信息！');
-                return;
-            end
-            
-            grp = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', ...
-                'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', ...
-                'V', 'W', 'X', 'Y', 'Z'];
-            if isempty(find(grp == ct_name(1), 1))
-                set(obj.edt_echo, 'string', '输入的城市名拼音首字母没有大写，请重新输入！');
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', '正在获取该城市的经纬度信息，请稍等...');
-            
-            obj.city_obj = city(obj);
-            pause(0.4);
-            
-            set(obj.rcv_edt_lat, 'string', obj.city_obj.city_lat);
-            set(obj.rcv_edt_lon, 'string', obj.city_obj.city_lon);
-            set(obj.edt_echo, 'string', '已获取到该城市经纬度信息，见“接收机参数设置区”!');
-        end
+      
+       
+     
         
         % Callback function for button start.
         function button_start_callback(obj, source, eventdata)
@@ -830,45 +617,7 @@ classdef no_satellite_simple_gui_start < handle
             clc;
         end
         
-        function button_ip_callback(obj, source, eventdata)
-            if isempty(get(obj.ip_edt, 'string'))
-                set(obj.edt_echo, 'string', '请先设置E4438的IP地址，再进行网络测试！');
-                obj.ip_tst = 0;
-                return;
-            end
-            
-            ip_addr = get(obj.ip_edt, 'string');
-            ip_split = strsplit(ip_addr, '.');
-            if length(ip_split) ~= 4
-                set(obj.edt_echo, 'string', 'IP地址格式错误，请重新输入IP地址！');
-                return;
-            end
-            
-            if ~isempty(find(str2double(ip_split) < 0, 1)) || ~isempty(find(str2double(ip_split) > 255, 1))
-                set(obj.edt_echo, 'string', 'IP地址以“.”号分隔的数字范围为[0,255]，请重新输入！');
-                return;
-            end
-            
-            if sum(isnan(str2double(ip_split))) ~= 0
-                set(obj.edt_echo, 'string', 'IP地址中包含非法字符，请重新输入IP地址！');
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', '正在测试PC与E4438之间的网络连通性，请稍等...');
-            pause(0.4);
-            
-            ip_addr = get(obj.ip_edt, 'string');
-            ip_con = dos(['ping -w 100 -n 1 ', ip_addr]);
-            
-            if ip_con == 0
-                set(obj.edt_echo, 'string', '网络正常，可进行下载！');
-                obj.ip_tst = 1;
-            else
-                set(obj.edt_echo, 'string', '请检查您的网络连接以及E4438的LAN配置！');
-                obj.ip_tst = -1;
-                return;
-            end
-        end
+      
         
         function callback_mapping(obj)
           
