@@ -26,7 +26,14 @@ classdef no_satellite_simple_gui_start < handle
         % Plane number.飞机数量
         plane_num_txt;
         plane_num_edt;
-        
+          % Configuration file settings panel.
+        config_auto;
+        config_txt;
+        config_edt;
+        config_sct;
+        config_con;
+        config_man;
+        config_path;
     
         
       
@@ -150,11 +157,11 @@ classdef no_satellite_simple_gui_start < handle
             % The first row in the panel.
          
             % Init the Lattitude text for plane param.
-            obj.plane_txt_lat = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_txt_lat1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','起始纬度(N,度)','position',[0 obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_lat = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_edt_lat1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[txt_area_width_label+1 obj.panel_height - 80 ...
               edit_area_width 40]);
@@ -162,52 +169,52 @@ classdef no_satellite_simple_gui_start < handle
           
           
             % Init the Longtitude text for the plane.
-            obj.plane_txt_lon = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_txt_lon1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','起始经度(E,度)','position',[2+(txt_area_width_label+edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_lon = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_edt_lon1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[3+(2*txt_area_width_label+edit_area_width) obj.panel_height - 80 ...
               edit_area_width 40]);
         
  
             % Init the transmit power of the plane.
-            obj.plane_txt_pw = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_txt_pw1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','功率(dbm)','position',[4+(2*txt_area_width_label+2*edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_pw = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_edt_pw1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white','Fontsize',11,'position', ...
                 [5+(3*txt_area_width_label+2*edit_area_width) obj.panel_height - 80 edit_area_width 40]);
             % Init the height text for the plane.
-            obj.plane_txt_alt = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_txt_alt1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','飞行高度(米)','position',[6+(3*txt_area_width_label+3*edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_alt = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_edt_alt1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[7+(4*txt_area_width_label+3*edit_area_width) obj.panel_height - 80 ...
               edit_area_width 40]);
        
         
             % Init the velocity text for the plane.
-            obj.plane_txt_vh = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_txt_vh1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','平面飞行速度(km/h)','position',[0 obj.panel_height - 130 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_vh = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_edt_vh1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white' ...
               ,'Fontsize',11,'position',[1+(txt_area_width_label) obj.panel_height - 130 ...
               edit_area_width 40]);
          
          
             % Init the azimuth of the plane.
-            obj.plane_txt_az = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_txt_az1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','平面航向角(度)','position',[2+(txt_area_width_label+edit_area_width) obj.panel_height - 130 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_az = uicontrol('parent', obj.panel_plane_1, 'style', ...
+            obj.plane_edt_az1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white' ...
               ,'Fontsize',11,'position',[3+(2*txt_area_width_label+edit_area_width) obj.panel_height - 130 ...
               edit_area_width 40]);
@@ -228,11 +235,11 @@ classdef no_satellite_simple_gui_start < handle
             % The first row in the panel.
          
             % Init the Lattitude text for plane param.
-            obj.plane_txt_lat = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_txt_lat2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','起始纬度(N,度)','position',[0 obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_lat = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_edt_lat2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[txt_area_width_label+1 obj.panel_height - 80 ...
               edit_area_width 40]);
@@ -240,52 +247,52 @@ classdef no_satellite_simple_gui_start < handle
           
           
             % Init the Longtitude text for the plane.
-            obj.plane_txt_lon = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_txt_lon2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','起始经度(E,度)','position',[2+(txt_area_width_label+edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_lon = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_edt_lon2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[3+(2*txt_area_width_label+edit_area_width) obj.panel_height - 80 ...
               edit_area_width 40]);
         
  
             % Init the transmit power of the plane.
-            obj.plane_txt_pw = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_txt_pw2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','功率(dbm)','position',[4+(2*txt_area_width_label+2*edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_pw = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_edt_pw2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white','Fontsize',11,'position', ...
                 [5+(3*txt_area_width_label+2*edit_area_width) obj.panel_height - 80 edit_area_width 40]);
             % Init the height text for the plane.
-            obj.plane_txt_alt = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_txt_alt2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','飞行高度(米)','position',[6+(3*txt_area_width_label+3*edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_alt = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_edt_alt2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[7+(4*txt_area_width_label+3*edit_area_width) obj.panel_height - 80 ...
               edit_area_width 40]);
        
         
             % Init the velocity text for the plane.
-            obj.plane_txt_vh = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_txt_vh2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','平面飞行速度(km/h)','position',[0 obj.panel_height - 130 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_vh = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_edt_vh2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white' ...
               ,'Fontsize',11,'position',[1+(txt_area_width_label) obj.panel_height - 130 ...
               edit_area_width 40]);
          
          
             % Init the azimuth of the plane.
-            obj.plane_txt_az = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_txt_az2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','平面航向角(度)','position',[2+(txt_area_width_label+edit_area_width) obj.panel_height - 130 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_az = uicontrol('parent',obj.panel_plane_2, 'style', ...
+            obj.plane_edt_az2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white' ...
               ,'Fontsize',11,'position',[3+(2*txt_area_width_label+edit_area_width) obj.panel_height - 130 ...
               edit_area_width 40]);
@@ -308,11 +315,11 @@ classdef no_satellite_simple_gui_start < handle
             % The first row in the panel.
          
             % Init the Lattitude text for plane param.
-            obj.plane_txt_lat = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_txt_lat3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','起始纬度(N,度)','position',[0 obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_lat = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_edt_lat3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[txt_area_width_label+1 obj.panel_height - 80 ...
               edit_area_width 40]);
@@ -320,52 +327,52 @@ classdef no_satellite_simple_gui_start < handle
           
           
             % Init the Longtitude text for the plane.
-            obj.plane_txt_lon = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_txt_lon3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','起始经度(E,度)','position',[2+(txt_area_width_label+edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_lon = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_edt_lon3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[3+(2*txt_area_width_label+edit_area_width) obj.panel_height - 80 ...
               edit_area_width 40]);
         
  
             % Init the transmit power of the plane.
-            obj.plane_txt_pw = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_txt_pw3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','功率(dbm)','position',[4+(2*txt_area_width_label+2*edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_pw = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_edt_pw3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white','Fontsize',11,'position', ...
                 [5+(3*txt_area_width_label+2*edit_area_width) obj.panel_height - 80 edit_area_width 40]);
             % Init the height text for the plane.
-            obj.plane_txt_alt = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_txt_alt3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','飞行高度(米)','position',[6+(3*txt_area_width_label+3*edit_area_width) obj.panel_height - 80 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_alt = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_edt_alt3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white'...
               ,'Fontsize',11,'position',[7+(4*txt_area_width_label+3*edit_area_width) obj.panel_height - 80 ...
               edit_area_width 40]);
        
         
             % Init the velocity text for the plane.
-            obj.plane_txt_vh = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_txt_vh3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','平面飞行速度(km/h)','position',[0 obj.panel_height - 130 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_vh = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_edt_vh3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white' ...
               ,'Fontsize',11,'position',[1+(txt_area_width_label) obj.panel_height - 130 ...
               edit_area_width 40]);
          
          
             % Init the azimuth of the plane.
-            obj.plane_txt_az = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_txt_az3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
                 'string','平面航向角(度)','position',[2+(txt_area_width_label+edit_area_width) obj.panel_height - 130 ...
                 txt_area_width_label 40]);
-            obj.plane_edt_az = uicontrol('parent',obj.panel_plane_3, 'style', ...
+            obj.plane_edt_az3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white' ...
               ,'Fontsize',11,'position',[3+(2*txt_area_width_label+edit_area_width) obj.panel_height - 130 ...
               edit_area_width 40]);
@@ -386,130 +393,23 @@ classdef no_satellite_simple_gui_start < handle
                 [0.83, 0.82, 0.78], 'string', '退出', ...
                 'Fontsize', 15, 'position', [floor((obj.gui_width - 450) / 2) + 250, ...
                 30, 150, 50]);
-            
-            % Create echo info window.
+               % Create echo info window.
             obj.txt_echo = uicontrol('parent', obj.gui_p, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 12, ...
-                'string','程序状态信息','position',[25 ...
-                obj.panel_height - 225 ...
-                100 50]);
+                'string','程序状态信息','position',[240 ...
+                obj.panel_height - 90 120 40]);
             obj.edt_echo = uicontrol('parent', obj.gui_p, 'style', ...
                 'edit', 'BackgroundColor','white' ...
-              ,'Fontsize',11,'position',[130 ...
-              obj.panel_height - 210 500 50]);
-          
-        
+              ,'Fontsize',11,'position',[360 ...
+              obj.panel_height - 75 500 40]);
+     
             
             % Mapping to the callback function.
             callback_mapping(obj);
         end
         
-        % Callback function for look up button.
-        function button_lookup_callback(obj, source, eventdata)
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
-            end
-            
-            if isempty(get(obj.plane_info_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未输入飞机编号，请输入飞机编号后再查询配置信息！');
-                return;
-            end
-            
-            plane_index = str2double(get(obj.plane_info_edt, 'string'));
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
-                return;
-            end
-            
-            if isnan(plane_index)
-                set(obj.edt_echo, 'string', '输入的飞机编号中包含非法字符，应为正整数，请重新输入！');
-                return;
-            elseif ~isempty(find(get(obj.plane_info_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif plane_index <= 0 || plane_index > fnum
-                set(obj.edt_echo, 'string', ['输入的飞机编号超出范围,应为(0, ', num2str(fnum), ']，请重新输入！']);
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', ['正在查询飞机', num2str(plane_index), ...
-                '的配置信息，请稍等...']);
-            pause(0.4);
-            
-            set(obj.plane_edt_icao, 'string', obj.plane_info{plane_index, 1}.icao);
-            set(obj.plane_edt_fgt, 'string', obj.plane_info{plane_index, 1}.fgt_num);
-            set(obj.plane_edt_pw, 'string', obj.plane_info{plane_index, 1}.power);
-            set(obj.plane_edt_feq, 'string', obj.plane_info{plane_index, 1}.feq_err);
-            set(obj.plane_edt_lat, 'string', obj.plane_info{plane_index, 1}.st_lat);
-            set(obj.plane_edt_lon, 'string', obj.plane_info{plane_index, 1}.st_lon);
-            set(obj.plane_edt_alt, 'string', obj.plane_info{plane_index, 1}.st_alt);
-            set(obj.plane_edt_vh, 'string', obj.plane_info{plane_index, 1}.vh);
-            set(obj.plane_edt_az, 'string', obj.plane_info{plane_index, 1}.az);
-            
-            set(obj.edt_echo, 'string', ['飞机', num2str(plane_index), '的配置信息查询完毕，见“飞机参数设置区”！']);
-        end
-        
-        % Callback function for saving configuration button.
-        function button_save_config_callback(obj, source, eventdata)
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
-            end
-            
-            if isempty(get(obj.plane_info_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未输入飞机编号，请输入飞机编号后再查询配置信息！');
-                return;
-            end
-            
-            plane_index = str2double(get(obj.plane_info_edt, 'string'));
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
-                return;
-            end
-            
-            if isnan(plane_index)
-                set(obj.edt_echo, 'string', '输入的飞机编号中包含非法字符，应为正整数，请重新输入！');
-                return;
-            elseif ~isempty(find(get(obj.plane_info_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif plane_index <= 0 || plane_index > fnum
-                set(obj.edt_echo, 'string', ['输入的飞机编号超出范围,应为(0, ', num2str(fnum), ']，请重新输入！']);
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', ['正在保存飞机', num2str(plane_index), ...
-                '的配置信息，请稍等...']);
-            pause(0.4);
-            
-            obj.plane_info{plane_index, 1}.icao = str2double(get(obj.plane_edt_icao, 'string'));
-            obj.plane_info{plane_index, 1}.fgt_num = get(obj.plane_edt_fgt, 'string');
-            obj.plane_info{plane_index, 1}.power = str2double(get(obj.plane_edt_pw, 'string'));
-            obj.plane_info{plane_index, 1}.feq_err = str2double(get(obj.plane_edt_feq, 'string'));
-            obj.plane_info{plane_index, 1}.st_lat = str2double(get(obj.plane_edt_lat, 'string'));
-            obj.plane_info{plane_index, 1}.st_lon = str2double(get(obj.plane_edt_lon, 'string'));
-            obj.plane_info{plane_index, 1}.st_alt = str2double(get(obj.plane_edt_alt, 'string'));
-            obj.plane_info{plane_index, 1}.vh = str2double(get(obj.plane_edt_vh, 'string'));
-            obj.plane_info{plane_index, 1}.az = str2double(get(obj.plane_edt_az, 'string'));
-            
-            set(obj.edt_echo, 'string', ['飞机', num2str(plane_index), ...
-                '的配置信息保存完毕！']);
-        end
+     
+      
         
         % Callback function for automatic configuration button.
         function button_auto_config_callback(obj, source, eventdata)
@@ -518,7 +418,7 @@ classdef no_satellite_simple_gui_start < handle
                 return;
             end
             
-            if isempty(get(obj.plane_tm_edt, 'string'))
+            if isempty(get(obj.plane_edt_times, 'string'))
                 set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
                 return;
             end
@@ -530,12 +430,12 @@ classdef no_satellite_simple_gui_start < handle
             elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
                 set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
                 return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
+            elseif fnum <= 0 || fnum > 100
+                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 100]，请重新设置！');
                 return;
             end
             
-            ftime = str2double(get(obj.plane_tm_edt, 'string'));
+            ftime = str2double(get(obj.plane_edt_times, 'string'));
             if isnan(ftime)
                 set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
                 return;
@@ -543,130 +443,18 @@ classdef no_satellite_simple_gui_start < handle
                 set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
                 return;
             end
+            % 接下来需要调用随机方法生成随机的飞机信息矩阵
+            set(obj.edt_echo, 'string', '正在进行仿真...');
+  
+            planes= PlaneDistribute1(fnum);
             
-            check_rcv_param(obj);
-            if obj.rpc == 1
-                obj.rpc = 0;
-                return;
-            end
+
             
-            obj.rpc = 0;
-            
-            set(obj.edt_echo, 'string', '正在自动配置飞机参数，请稍等...');
-            pause(0.4);
-            
-            obj.plane_info = init_plane_info(fnum);
-            obj.rcv_info.lat = str2double(get(obj.rcv_edt_lat, 'string'));
-            obj.rcv_info.lon = str2double(get(obj.rcv_edt_lon, 'string'));
-            obj.rcv_info.alt = str2double(get(obj.rcv_edt_alt, 'string'));
-            
-            obj = auto_config(obj, fnum);
-            set(obj.edt_echo, 'string', '自动配置飞机参数完成，您可以通过输入飞机编号查询对应的配置信息！');
-            
-            obj.cb_auto_config = 1;
+            % 接下来调用紫童的方法传递参数，进行仿真
+            set(obj.edt_echo, 'string', '仿真结束');
+          
         end
         
-        % Callback function for select configuration file button.
-        function button_config_file_callback(obj, source, eventdata)
-            set(obj.edt_echo, 'string', '正在选取飞机参数配置文件...');
-            
-            % Select the position of the configuration file.
-%             iflag = 1;
-%             while iflag == 1 
-            [filename, pathname] = uigetfile({'*.*txt';'*.*'},'选择飞机参数配置文件');
-            if isequal(filename, 0)
-                set(obj.edt_echo, 'string', '您尚未选择任何配置文件，请选择！');
-                return;
-%                 iflag = 1;
-            else
-                obj.config_path = [pathname, filename];
-%                     iflag = 0;
-            end     % if isequal(filename,0)
-%             end     % while iflag == 1
-            
-%             work_path = pwd;
-%             rel_path = ['..', obj.config_path(length(work_path) + 1 : end)];
-            set(obj.edt_echo, 'string', '配置文件选择已完成，可在“飞机参数配置文件”中查看配置文件路径！');
-            set(obj.config_edt, 'string', obj.config_path);
-        end
-        
-        % Callback function for configuration button.
-        function button_config_callback(obj, source, eventdata)
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
-            end
-            
-            if isempty(get(obj.plane_tm_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
-                return;
-            end
-            
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
-                return;
-            end
-            
-            ftime = str2double(get(obj.plane_tm_edt, 'string'));
-            if isnan(ftime)
-                set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
-                return;
-            elseif ftime <= 0 || ftime > 60
-                set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', '正在读取配置文件，配置飞机参数，请稍等...');
-            pause(0.4);
-            
-            obj.plane_info = init_plane_info(fnum);
-            [obj, fnum_real] = read_config_file(obj, fnum);
-            if fnum_real <= fnum
-                set(obj.edt_echo, 'string', ['总共完成', num2str(fnum_real), ...
-                    '架飞机参数的配置，可通过输入飞机编号查询对应的配置信息！']);
-                set(obj.plane_num_edt, 'string', num2str(fnum_real));
-            else
-                set(obj.edt_echo, 'string', ['总共完成', num2str(fnum), ...
-                    '架飞机参数的配置，可通过输入飞机编号查询对应的配置信息！']);
-                set(obj.plane_num_edt, 'string', num2str(fnum));
-            end
-            
-            obj.cb_man_config = 1;
-        end
-        
-        % Callback function for button receiver.
-        function button_receiver_callback(obj, source, eventdata)
-            % Check the first char.
-            ct_name = get(obj.rcv_edt_city, 'string');
-            if isempty(ct_name)
-                set(obj.edt_echo, 'string', '请先输入城市名拼音，如Shanghai，再获取经纬度信息！');
-                return;
-            end
-            
-            grp = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', ...
-                'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', ...
-                'V', 'W', 'X', 'Y', 'Z'];
-            if isempty(find(grp == ct_name(1), 1))
-                set(obj.edt_echo, 'string', '输入的城市名拼音首字母没有大写，请重新输入！');
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', '正在获取该城市的经纬度信息，请稍等...');
-            
-            obj.city_obj = city(obj);
-            pause(0.4);
-            
-            set(obj.rcv_edt_lat, 'string', obj.city_obj.city_lat);
-            set(obj.rcv_edt_lon, 'string', obj.city_obj.city_lon);
-            set(obj.edt_echo, 'string', '已获取到该城市经纬度信息，见“接收机参数设置区”!');
-        end
         
         % Callback function for button start.
         function button_start_callback(obj, source, eventdata)
@@ -675,7 +463,7 @@ classdef no_satellite_simple_gui_start < handle
                 return;
             end
             
-            if isempty(get(obj.plane_tm_edt, 'string'))
+            if isempty(get(obj.plane_edt_times, 'string'))
                 set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
                 return;
             end
@@ -687,12 +475,12 @@ classdef no_satellite_simple_gui_start < handle
             elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
                 set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
                 return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
+            elseif fnum <= 0 || fnum > 100
+                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 100]，请重新设置！');
                 return;
             end
             
-            ftime = str2double(get(obj.plane_tm_edt, 'string'));
+            ftime = str2double(get(obj.plane_edt_times, 'string'));
             if isnan(ftime)
                 set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
                 return;
@@ -701,58 +489,19 @@ classdef no_satellite_simple_gui_start < handle
                 return;
             end
             
-            if obj.cb_auto_config == 0 && obj.cb_man_config == 0
-                set(obj.edt_echo, 'string', '尚未配置飞机参数，请先配置飞机参数！');
-                return;
-            end
+           
             
-            if obj.cb_man_config == 1
-                check_plane_param(obj);
-                if obj.ppc == 1
-                    obj.ppc = 0;
-                    return;
-                end
-            end
+          
             
-            obj.ppc = 0;
-            obj.cb_man_config = 0;
-            obj.cb_auto_config = 0;
-            
-            % Check the receiver parameter.
-            check_rcv_param(obj);
-            if obj.rpc == 1
-                obj.rpc = 0;
-                return;
-            end
-            
-            obj.rpc = 0;
-            
-            ip_addr = get(obj.ip_edt, 'string');
-            if isempty(ip_addr)
-                set(obj.edt_echo, 'string', '请先设置E4438C的IP地址！');
-                return;
-            end
-            
-            if obj.ip_tst == 0
-                set(obj.edt_echo, 'string', '尚未进行网络连通测试，请先进行网络连通测试！');
-                return;
-            elseif obj.ip_tst == -1
-                obj.ip_tst = 0;
-                set(obj.edt_echo, 'string', '请检查您的网络连接以及E4438的LAN配置！');
-                return;
-            end
+         
             
             set(obj.edt_echo, 'string', '正在运行“多架飞机ADS-B信号模拟程序”...');
             pause(0.3);
             
-            % Init the receiver struct.
-            rcvPosition = [str2double(get(obj.rcv_edt_lat, 'string')), ...
-                str2double(get(obj.rcv_edt_lon, 'string')), ...
-                str2double(get(obj.rcv_edt_alt, 'string'))];
-            receiver = Receiver(rcvPosition, 0, 0);
+     
             
             % Obtain the simulation time.
-            durationTime = str2double(get(obj.plane_tm_edt, 'string'));
+            durationTime = str2double(get(obj.plane_edt_times, 'string'));
             
             % Get plane info.
             planeInitialPosition = zeros(fnum, 3);
@@ -798,17 +547,7 @@ classdef no_satellite_simple_gui_start < handle
                 'fgt_num', fight_num, ...
                 'frqoffset' ,[-feq_err; feq_err] ...
                 );
-            planeFactory = PlaneFactory(planeGenParameter);
-            planes = planeFactory.buildPlanes(fnum);
-            
-            adsbMsgs=Msg1090Factory.buildMessages(planes,durationTime);
-            receiver.receiveMessages(adsbMsgs);
-            
-            waveDownloader=WaveDownloader(durationTime);
-            waveDownloader.downloadMessages(adsbMsgs );
-
-            waveDownloader.ip4438 = ip_addr;
-            waveDownloader.playWave(0, 0);
+       
             
             set(obj.edt_echo, 'string', '“多架飞机ADS-B信号模拟程序”运行完毕！');
         end
@@ -823,106 +562,19 @@ classdef no_satellite_simple_gui_start < handle
             clc;
         end
         
-        function button_ip_callback(obj, source, eventdata)
-            if isempty(get(obj.ip_edt, 'string'))
-                set(obj.edt_echo, 'string', '请先设置E4438的IP地址，再进行网络测试！');
-                obj.ip_tst = 0;
-                return;
-            end
-            
-            ip_addr = get(obj.ip_edt, 'string');
-            ip_split = strsplit(ip_addr, '.');
-            if length(ip_split) ~= 4
-                set(obj.edt_echo, 'string', 'IP地址格式错误，请重新输入IP地址！');
-                return;
-            end
-            
-            if ~isempty(find(str2double(ip_split) < 0, 1)) || ~isempty(find(str2double(ip_split) > 255, 1))
-                set(obj.edt_echo, 'string', 'IP地址以“.”号分隔的数字范围为[0,255]，请重新输入！');
-                return;
-            end
-            
-            if sum(isnan(str2double(ip_split))) ~= 0
-                set(obj.edt_echo, 'string', 'IP地址中包含非法字符，请重新输入IP地址！');
-                return;
-            end
-            
-            set(obj.edt_echo, 'string', '正在测试PC与E4438之间的网络连通性，请稍等...');
-            pause(0.4);
-            
-            ip_addr = get(obj.ip_edt, 'string');
-            ip_con = dos(['ping -w 100 -n 1 ', ip_addr]);
-            
-            if ip_con == 0
-                set(obj.edt_echo, 'string', '网络正常，可进行下载！');
-                obj.ip_tst = 1;
-            else
-                set(obj.edt_echo, 'string', '请检查您的网络连接以及E4438的LAN配置！');
-                obj.ip_tst = -1;
-                return;
-            end
-        end
         
         function callback_mapping(obj)
-            set(obj.plane_info_btn, 'callback', @obj.button_lookup_callback);
+          
             set(obj.config_man, 'callback', @obj.button_save_config_callback);
             set(obj.config_auto, 'callback', @obj.button_auto_config_callback);
             set(obj.config_sct, 'callback', @obj.button_config_file_callback);
             set(obj.config_con, 'callback', @obj.button_config_callback);
-            set(obj.button_rcv, 'callback', @obj.button_receiver_callback);
+
             set(obj.btn_c1, 'callback', @obj.button_start_callback);
             set(obj.btn_c2, 'callback', @obj.button_exit_callback);
-            set(obj.ip_btn, 'callback', @obj.button_ip_callback);
+           
         end
         
-        function check_rcv_param(obj)
-            obj.rpc = 0;
-            
-            % Whether the parameter is configured!
-            if isempty(get(obj.rcv_edt_lat, 'string')) || ...
-                    isempty(get(obj.rcv_edt_lon, 'string')) || ...
-                    isempty(get(obj.rcv_edt_alt, 'string'))
-                set(obj.edt_echo, 'string', '接收机参数尚未设置完毕，请先设置接收机参数！');
-                obj.rpc = 1;
-                return;
-            end
-            
-            % Check receiver latitude.
-            lat = str2double(get(obj.rcv_edt_lat, 'string'));
-            if isnan(lat)
-                set(obj.edt_echo, 'string', '设置的纬度中包含非法字符，应为数值，请重新设置！');
-                obj.rpc = 1;
-                return;
-            elseif lat < 0 || lat > 90
-                set(obj.edt_echo, 'string', '设置的纬度超出范围，应为[0, 90]，请重新设置！');
-                obj.rpc = 1;
-                return;
-            end
-            
-            % Receiver Longtitude.
-            lon = str2double(get(obj.rcv_edt_lon, 'string'));
-            if isnan(lon)
-                set(obj.edt_echo, 'string', '设置的经度中包含非法字符，应为数值，请重新设置！');
-                obj.rpc = 1;
-                return;
-            elseif lon < 0 || lon > 180
-                set(obj.edt_echo, 'string', '设置的经度超出范围，应为[0, 180]，请重新设置！');
-                obj.rpc = 1;
-                return;
-            end
-            
-            % Receiver height.
-            alt = str2double(get(obj.rcv_edt_alt, 'string'));
-            if isnan(alt)
-                set(obj.edt_echo, 'string', '设置的高度中包含非法字符，应为数值，请重新设置！');
-                obj.rpc = 1;
-                return;
-            elseif alt <= 0 || alt > 9000
-                set(obj.edt_echo, 'string', '设置的高度超出范围，应为(0, 9000]，请重新设置');
-                obj.rpc = 1;
-                return;
-            end
-        end
         
         function check_plane_param(obj)
             fnum = length(obj.plane_info);
@@ -1073,5 +725,9 @@ classdef no_satellite_simple_gui_start < handle
                 end
             end
         end
+        
+
     end
+    
+   
 end
