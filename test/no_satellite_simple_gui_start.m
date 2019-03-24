@@ -518,6 +518,8 @@ classdef no_satellite_simple_gui_start < handle
                   planes=[plane1,plane2];
             elseif plane2isempty(obj) && ~plane3isempty(obj)
                   planes=[plane1,plane3];
+            else
+                planes=plane1;
             end
           
             
