@@ -479,12 +479,12 @@ classdef no_satellite_simple_gui_start < handle
             hxj2=str2double(get(obj.plane_edt_az2, 'string'));
             power2=str2double(get(obj.plane_edt_pw2, 'string'));
              % 用户输入的飞机三的参数
-            lat3=str2double(get(obj.plane_edt_lat2, 'string'));
-            lon3=str2double(get(obj.plane_edt_lon2, 'string'));
-            high3=str2double(get(obj.plane_edt_alt2, 'string'));
-            speed3=str2double(get(obj.plane_edt_vh2, 'string'));
-            hxj3=str2double(get(obj.plane_edt_az2, 'string'));
-            power3=str2double(get(obj.plane_edt_pw2, 'string'));
+            lat3=str2double(get(obj.plane_edt_lat3, 'string'));
+            lon3=str2double(get(obj.plane_edt_lon3, 'string'));
+            high3=str2double(get(obj.plane_edt_alt3, 'string'));
+            speed3=str2double(get(obj.plane_edt_vh3, 'string'));
+            hxj3=str2double(get(obj.plane_edt_az3, 'string'));
+            power3=str2double(get(obj.plane_edt_pw3, 'string'));
             
           
 
@@ -511,6 +511,7 @@ classdef no_satellite_simple_gui_start < handle
                 end
             end
             
+            % 封装为矩阵
             if ~plane2isempty(obj)&&~plane3isempty(obj)
                   planes=[plane1,plane2,plane3];
             elseif ~plane2isempty(obj) && plane3isempty(obj)
