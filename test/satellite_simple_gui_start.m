@@ -1,7 +1,7 @@
-classdef no_satellite_simple_gui_start < handle
+classdef satellite_simple_gui_start < handle
 %% *********************************************************************
 %
-% @file         no_satellite_simple_gui_start.m
+% @file         satellite_simple_gui_start.m
 % @brief        Class definition for button 2 GUI.
 %
 % ******************************************************************************
@@ -96,7 +96,7 @@ classdef no_satellite_simple_gui_start < handle
     
     methods
         % Create figure and init.
-        function obj = no_satellite_simple_gui_start()
+        function obj = satellite_simple_gui_start()
             screen_size = get(0, 'ScreenSize');
             screen_size(screen_size < 100) = [];
             obj.width  = screen_size(1);
