@@ -458,78 +458,71 @@ classdef no_satellite_simple_gui_start < handle
         
         % Callback function for button start.
         function button_start_callback(obj, source, eventdata)
-          
-            check = check_plane_num_times(obj)
-            
-            if check==0
+             %校验飞行时间参数
+              ftime = str2double(get(obj.plane_edt_times, 'string'));
+            if is_err_time(ftime)
+                set(obj.edt_echo, 'string', '仿真时间必须在[0,60]秒，请重新设置！');
                 return
             end
-            check_plane1= check_plane_1(obj);
-
-              lat1=str2double(get(obj.plane_edt_lat1, 'string'));
+            % 用户输入的飞机一的参数
+            lat1=str2double(get(obj.plane_edt_lat1, 'string'));
             lon1=str2double(get(obj.plane_edt_lon1, 'string'));
             high1=str2double(get(obj.plane_edt_alt1, 'string'));
             speed1=str2double(get(obj.plane_edt_vh1, 'string'));
             hxj1=str2double(get(obj.plane_edt_az1, 'string'));
             power1=str2double(get(obj.plane_edt_pw1, 'string'));
-            plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
-          
+             % 用户输入的飞机二的参数
+            lat2=str2double(get(obj.plane_edt_lat2, 'string'));
+            lon2=str2double(get(obj.plane_edt_lon2, 'string'));
+            high2=str2double(get(obj.plane_edt_alt2, 'string'));
+            speed2=str2double(get(obj.plane_edt_vh2, 'string'));
+            hxj2=str2double(get(obj.plane_edt_az2, 'string'));
+            power2=str2double(get(obj.plane_edt_pw2, 'string'));
+             % 用户输入的飞机三的参数
+            lat3=str2double(get(obj.plane_edt_lat2, 'string'));
+            lon3=str2double(get(obj.plane_edt_lon2, 'string'));
+            high3=str2double(get(obj.plane_edt_alt2, 'string'));
+            speed3=str2double(get(obj.plane_edt_vh2, 'string'));
+            hxj3=str2double(get(obj.plane_edt_az2, 'string'));
+            power3=str2double(get(obj.plane_edt_pw2, 'string'));
             
-         
+          
+
+            % 校验飞机1参数
+            if check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,'一')==0
+                return ;
+            end
+             plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
+             %飞机2不为空,就需要校验参数，并且把参数合并到飞机1.2中
+            if ~plane2isempty(obj)
+                if check_plane_1(obj,lon2,lat2,high2,speed2,hxj2,power2,'二')==0
+                    return ;
+                else
+                    plane2 = createPlane(obj,lon2,lat2,high2,speed2,hxj2,power2);
+                end
+            end
+            
+            %飞机3不为空,就需要校验参数，并且把参数合并到飞机1.2中
+            if ~plane3isempty(obj)
+                 if check_plane_1(obj,lon3,lat3,high3,speed3,hxj3,power3,'三')==0
+                    return ;
+                 else
+                    plane3 = createPlane(obj,lon3,lat3,high3,speed3,hxj3,power3);
+                end
+            end
+            
+            if ~plane2isempty(obj)&&~plane3isempty(obj)
+                  planes=[plane1,plane2,plane3];
+            elseif ~plane2isempty(obj) && plane3isempty(obj)
+                  planes=[plane1,plane2];
+            elseif plane2isempty(obj) && ~plane3isempty(obj)
+                  planes=[plane1,plane3];
+            end
+          
             
             set(obj.edt_echo, 'string', '正在运行“多架飞机ADS-B信号模拟程序”...');
             pause(0.3);
             
-     
-            
-            % Obtain the simulation time.
-            durationTime = str2double(get(obj.plane_edt_times, 'string'));
-            
-            % Get plane info.
-            planeInitialPosition = zeros(fnum, 3);
-            planePower = zeros(fnum, 1);
-            plane_id = zeros(fnum, 1);
-            fight_num = [];
-            feq_err = zeros(1, fnum);
-            planeSpeed = zeros(1, fnum);
-            azi = zeros(1, fnum);
-            
-            for ii = 1 : fnum
-                planeInitialPosition(ii, :) = [obj.plane_info{ii, 1}.st_lat, ...
-                    obj.plane_info{ii, 1}.st_lon, ...
-                    obj.plane_info{ii, 1}.st_alt];
-                planePower(ii, 1) = 30 + 10 * log10(obj.plane_info{ii, 1}.power);
-                plane_id(ii, 1) = obj.plane_info{ii, 1}.icao;
-                fgn = obj.plane_info{ii, 1}.fgt_num;
-                fgn = [fgn, repmat(' ', 1, 8 - length(fgn))];
-                fight_num = [fight_num; fgn];
-                feq_err(1, ii) = obj.plane_info{ii, 1}.feq_err;
-                planeSpeed(1, ii) = obj.plane_info{ii, 1}.vh / 3.6;
-                azi(1, ii) = obj.plane_info{ii, 1}.az;
-            end
-            
-            arc = distance(receiver.startLat, receiver.startLon, ...
-                planeInitialPosition(:, 1), planeInitialPosition(:, 2));
-            dis = (arc * pi) / 180 * 6371 * 1000;  % Unit in m.
-            % Distance between receiver and the plane.
-            planeRadius = sqrt(dis .^ 2 + (planeInitialPosition(:, 3) - ...
-                receiver.startAlt) .^ 2);
-            index_error = find(planeRadius > 300 * (1e+3));
-            if ~isempty(index_error)
-                set(['飞机', num2str(index_error), '距离接收机的距离大于300km，请重新设置！']);
-            end
-            
-            planeGenParameter = struct( ...
-                'center', planeInitialPosition, ...
-                'altitude', [planeInitialPosition(:, 3)'; planeInitialPosition(:, 3)'], ...
-                'speed' ,[planeSpeed; planeSpeed], ...
-                'azimuth' , [azi; azi], ...
-                'power' ,planePower, ...
-                'id', plane_id, ...
-                'fgt_num', fight_num, ...
-                'frqoffset' ,[-feq_err; feq_err] ...
-                );
-       
             
             set(obj.edt_echo, 'string', '“多架飞机ADS-B信号模拟程序”运行完毕！');
         end
@@ -544,6 +537,65 @@ classdef no_satellite_simple_gui_start < handle
             clc;
         end
         
+        
+        % 判断飞机二的参数是不是都为空
+         function s= plane2isempty(obj)
+             s=1;
+             if ~isempty(get(obj.plane_edt_lat2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_lon2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_alt2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_vh2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_az2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_pw2, 'string'))
+                 s=0;
+                 return;
+             end
+         end
+         % 判断飞机三的参数是不是都为空
+          function s= plane3isempty(obj)
+             s=1;
+             if ~isempty(get(obj.plane_edt_lat3, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_lon3, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_alt3, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_vh3, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_az3, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_pw3, 'string'))
+                 s=0;
+                 return;
+             end
+         end
+        
+         % 校验飞机数量和仿真时间
         function s= check_plane_num_times(obj)
             s=0;
             if isempty(get(obj.plane_num_edt, 'string'))
@@ -580,36 +632,32 @@ classdef no_satellite_simple_gui_start < handle
             return ;
         end
         
-        function s = check_plane_1(obj)
+        % 校验飞机的6个参数是否正确
+        function s = check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,num)
             s=0;
-            lat1=str2double(get(obj.plane_edt_lat1, 'string'));
-            lon1=str2double(get(obj.plane_edt_lon1, 'string'));
-            high1=str2double(get(obj.plane_edt_alt1, 'string'));
-            speed1=str2double(get(obj.plane_edt_vh1, 'string'));
-            hxj1=str2double(get(obj.plane_edt_az1, 'string'));
-            power1=str2double(get(obj.plane_edt_pw1, 'string'));
+            str =strcat('设置的飞机',num);
             if is_err_lat(lat1)
-                set(obj.edt_echo, 'string', '设置的飞机1纬度度超出范围，应为[-90, 90]，请重新设置！');
+                set(obj.edt_echo, 'string', strcat(str,'纬度度超出范围，应为[-90, 90]，请重新设置！'));
                 return;
             end
              if is_err_lon(lon1)
-                set(obj.edt_echo, 'string', '设置的飞机1经度超出范围，应为[-180, 180]，请重新设置！');
+                set(obj.edt_echo, 'string', strcat(str,'经度超出范围，应为[-180, 180]，请重新设置！'));
                 return;
              end
              if is_err_high(high1)
-                set(obj.edt_echo, 'string', '设置的飞机1高度空层超出范围，应为[1, 12]，请重新设置！');
+                set(obj.edt_echo, 'string',  strcat(str,'高度空层超出范围，应为[1, 12]，请重新设置！'));
                 return;
              end
              if is_err_speed(speed1)
-                set(obj.edt_echo, 'string', '设置的飞机1速度超出范围，应为[800, 1000]，请重新设置！');
+                set(obj.edt_echo, 'string',  strcat(str,'速度超出范围，应为[800, 1000]，请重新设置！'));
                 return;
              end
              if is_err_hxj(hxj1)
-                set(obj.edt_echo, 'string', '设置的飞机1航向角超出范围，应为[0, 360]，请重新设置！');
+                set(obj.edt_echo, 'string',  strcat(str,'航向角超出范围，应为[0, 360]，请重新设置！'));
                 return;
              end
              if is_err_gl(power1)
-                set(obj.edt_echo, 'string', '设置的飞机1功率超出范围，应为[0, 100]，请重新设置！');
+                set(obj.edt_echo, 'string',  strcat(str,'功率超出范围，应为[0, 100]，请重新设置！'));
                 return;
              end
             s=1;
