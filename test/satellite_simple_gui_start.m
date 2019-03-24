@@ -115,7 +115,7 @@ classdef satellite_simple_gui_start < handle
         wx_tx_num_txt;%天线数量
         wx_txbs_width_txt;%天线波束宽度
         %下面是文本框的定义
-         wx_lat_edit;
+        wx_lat_edit;
         wx_lon_edit;
         wx_high_edit;
         wx_tx_power_edit;%天线功率
@@ -206,7 +206,7 @@ classdef satellite_simple_gui_start < handle
             % Init the height text for the plane.
             obj.wx_high_txt = uicontrol('parent', obj.wx_panel_erea, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','卫星高度(米)','position',[6+(3*txt_area_width_label+3*edit_area_width) 60 ...
+                'string','卫星高度(km)','position',[6+(3*txt_area_width_label+3*edit_area_width) 60 ...
                 txt_area_width_label 40]);
             obj.wx_high_edit = uicontrol('parent', obj.wx_panel_erea, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -216,7 +216,7 @@ classdef satellite_simple_gui_start < handle
             % Init the velocity text for the plane.
             obj.wx_speed_txt = uicontrol('parent', obj.wx_panel_erea, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','卫星速度(km/h)','position',[8+(4*txt_area_width_label+4*edit_area_width) 60 ...
+                'string','卫星速度(km/s)','position',[8+(4*txt_area_width_label+4*edit_area_width) 60 ...
                 txt_area_width_label 40]);
             obj.wx_speed_edit = uicontrol('parent', obj.wx_panel_erea, 'style', ...
                 'edit', 'BackgroundColor','white' ...
@@ -385,7 +385,7 @@ classdef satellite_simple_gui_start < handle
             % Init the height text for the plane.
             obj.plane_txt_alt1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','飞行高度(米)','position',[6+(3*txt_area_width_label+3*edit_area_width) 0 ...
+                'string','飞行高度(空层)','position',[6+(3*txt_area_width_label+3*edit_area_width) 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_alt1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -455,7 +455,7 @@ classdef satellite_simple_gui_start < handle
             % Init the height text for the plane.
             obj.plane_txt_alt2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','飞行高度(米)','position',[6+(3*txt_area_width_label+3*edit_area_width) 0 ...
+                'string','飞行高度(空层)','position',[6+(3*txt_area_width_label+3*edit_area_width) 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_alt2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -522,7 +522,7 @@ classdef satellite_simple_gui_start < handle
             % Init the height text for the plane.
             obj.plane_txt_alt3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','飞行高度(米)','position',[6+(3*txt_area_width_label+3*edit_area_width) 0 ...
+                'string','飞行高度(空层)','position',[6+(3*txt_area_width_label+3*edit_area_width) 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_alt3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -839,6 +839,68 @@ classdef satellite_simple_gui_start < handle
              end
             s=1;
         end
+        
+          % 校验卫星参数是否正确
+        function s = check_wx_param(obj)
+            s=0;
+        
+        lat1 = str2double(get(obj.wx_lat_edit, 'string'));
+        lon1 = str2double(get(obj.wx_lon_edit, 'string'));
+        high1 = str2double(get(obj.wx_high_edit, 'string'));
+        power1 = str2double(get(obj.wx_tx_power_edit, 'string'));
+        hxj1 = str2double(get(obj.wx_hxj_edit, 'string'));
+        speed1 = str2double(get(obj.wx_speed_edit, 'string'));
+        tx_num_edit = str2double(get(obj.wx_tx_num_edit, 'string'));
+        txbs_width_edit = str2double(get(obj.wx_txbs_width_edit, 'string'));
+            if is_err_lat(lat1)
+                set(obj.edt_echo, 'string', '纬度度超出范围，应为[-90, 90]，请重新设置！');
+                return;
+            end
+            if is_err_lon(lon1)
+                set(obj.edt_echo, 'string', '经度超出范围，应为[-180, 180]，请重新设置！');
+                return;
+             end
+             if isnan(high1)
+                set(obj.edt_echo, 'string',  '卫星高度必须为数字，请重新设置！');
+                return;
+             elseif high1<10||high1>100000
+                set(obj.edt_echo, 'string',  '卫星高度必须为数字，请重新设置！');
+                return;
+             end
+            if isnan(speed1)
+                set(obj.edt_echo, 'string',  '卫星速度必须为数字，请重新设置！');
+                return;
+             elseif high1<0||high1>1000
+                set(obj.edt_echo, 'string',  '卫星速度必须为数字，应为[0, 1000]，请重新设置！');
+                return;
+             end
+             if is_err_hxj(hxj1)
+                set(obj.edt_echo, 'string',  '航向角超出范围，应为[0, 360]，请重新设置！');
+                return;
+             end
+             if is_err_gl(power1)
+                set(obj.edt_echo, 'string',  '功率超出范围，应为[0, 100]，请重新设置！');
+                return;
+             end
+             if isnan(tx_num_edit)
+                set(obj.edt_echo, 'string',  '天线数量必须为数字，请重新设置！');
+                return;
+             elseif tx_num_edit<0||tx_num_edit>10
+                set(obj.edt_echo, 'string',  '天线数量必须为数字，应为[0, 10]，请重新设置！');
+                return;
+             end
+             
+             if isnan(txbs_width_edit)
+                set(obj.edt_echo, 'string',  '天线波速宽度必须为数字，请重新设置！');
+                return;
+             elseif txbs_width_edit<0
+                set(obj.edt_echo, 'string',  '天线波速宽度必须为正数，请重新设置！');
+                return;
+             end
+             
+            s=1;
+        end
+        
         
         %创建随机的飞机位置
         function plane = createPlane(obj,lon,lat,high,speed,hxj,power)
