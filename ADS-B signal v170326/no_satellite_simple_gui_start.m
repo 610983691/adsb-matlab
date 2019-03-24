@@ -393,7 +393,15 @@ classdef no_satellite_simple_gui_start < handle
                 [0.83, 0.82, 0.78], 'string', '退出', ...
                 'Fontsize', 15, 'position', [floor((obj.gui_width - 450) / 2) + 250, ...
                 30, 150, 50]);
-            
+               % Create echo info window.
+            obj.txt_echo = uicontrol('parent', obj.gui_p, 'style', ...
+                'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 12, ...
+                'string','程序状态信息','position',[240 ...
+                obj.panel_height - 90 120 40]);
+            obj.edt_echo = uicontrol('parent', obj.gui_p, 'style', ...
+                'edit', 'BackgroundColor','white' ...
+              ,'Fontsize',11,'position',[360 ...
+              obj.panel_height - 75 500 40]);
      
             
             % Mapping to the callback function.
@@ -410,7 +418,7 @@ classdef no_satellite_simple_gui_start < handle
                 return;
             end
             
-            if isempty(get(obj.plane_tm_edt, 'string'))
+            if isempty(get(obj.plane_edt_times, 'string'))
                 set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
                 return;
             end
@@ -422,12 +430,12 @@ classdef no_satellite_simple_gui_start < handle
             elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
                 set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
                 return;
-            elseif fnum <= 0 || fnum > 8
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 8]，请重新设置！');
+            elseif fnum <= 0 || fnum > 100
+                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 100]，请重新设置！');
                 return;
             end
             
-            ftime = str2double(get(obj.plane_tm_edt, 'string'));
+            ftime = str2double(get(obj.plane_edt_times, 'string'));
             if isnan(ftime)
                 set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
                 return;
@@ -435,27 +443,12 @@ classdef no_satellite_simple_gui_start < handle
                 set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
                 return;
             end
+            % 接下来需要调用随机方法生成随机的飞机信息矩阵
             
-            check_rcv_param(obj);
-            if obj.rpc == 1
-                obj.rpc = 0;
-                return;
-            end
             
-            obj.rpc = 0;
-            
-            set(obj.edt_echo, 'string', '正在自动配置飞机参数，请稍等...');
-            pause(0.4);
-            
-            obj.plane_info = init_plane_info(fnum);
-            obj.rcv_info.lat = str2double(get(obj.rcv_edt_lat, 'string'));
-            obj.rcv_info.lon = str2double(get(obj.rcv_edt_lon, 'string'));
-            obj.rcv_info.alt = str2double(get(obj.rcv_edt_alt, 'string'));
-            
-            obj = auto_config(obj, fnum);
-            set(obj.edt_echo, 'string', '自动配置飞机参数完成，您可以通过输入飞机编号查询对应的配置信息！');
-            
-            obj.cb_auto_config = 1;
+            % 接下来调用紫童的方法传递参数，进行仿真
+      
+          
         end
         
       
@@ -469,7 +462,7 @@ classdef no_satellite_simple_gui_start < handle
                 return;
             end
             
-            if isempty(get(obj.plane_tm_edt, 'string'))
+            if isempty(get(obj.plane_edt_times, 'string'))
                 set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
                 return;
             end
@@ -486,7 +479,7 @@ classdef no_satellite_simple_gui_start < handle
                 return;
             end
             
-            ftime = str2double(get(obj.plane_tm_edt, 'string'));
+            ftime = str2double(get(obj.plane_edt_times, 'string'));
             if isnan(ftime)
                 set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
                 return;
@@ -546,7 +539,7 @@ classdef no_satellite_simple_gui_start < handle
             receiver = Receiver(rcvPosition, 0, 0);
             
             % Obtain the simulation time.
-            durationTime = str2double(get(obj.plane_tm_edt, 'string'));
+            durationTime = str2double(get(obj.plane_edt_times, 'string'));
             
             % Get plane info.
             planeInitialPosition = zeros(fnum, 3);
