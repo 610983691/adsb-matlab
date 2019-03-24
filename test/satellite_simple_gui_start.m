@@ -587,6 +587,10 @@ classdef satellite_simple_gui_start < handle
         
         % Callback function for automatic configuration button.
         function result =button_auto_config_callback(obj, source, eventdata)
+            if check_wx_param(obj)==0
+                 return;
+            end
+            
             if isempty(get(obj.plane_num_edt, 'string'))
                 set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
                 return;
@@ -633,6 +637,9 @@ classdef satellite_simple_gui_start < handle
         
         % Callback function for button start.
         function result =button_start_callback(obj, source, eventdata)
+            if check_wx_param(obj)==0
+                 return;
+            end
              %校验飞行时间参数
               ftime = str2double(get(obj.plane_edt_times, 'string'));
             if is_err_time(ftime)
@@ -853,11 +860,11 @@ classdef satellite_simple_gui_start < handle
         tx_num_edit = str2double(get(obj.wx_tx_num_edit, 'string'));
         txbs_width_edit = str2double(get(obj.wx_txbs_width_edit, 'string'));
             if is_err_lat(lat1)
-                set(obj.edt_echo, 'string', '纬度度超出范围，应为[-90, 90]，请重新设置！');
+                set(obj.edt_echo, 'string', '卫星纬度度超出范围，应为[-90, 90]，请重新设置！');
                 return;
             end
             if is_err_lon(lon1)
-                set(obj.edt_echo, 'string', '经度超出范围，应为[-180, 180]，请重新设置！');
+                set(obj.edt_echo, 'string', '卫星经度超出范围，应为[-180, 180]，请重新设置！');
                 return;
              end
              if isnan(high1)
@@ -875,26 +882,26 @@ classdef satellite_simple_gui_start < handle
                 return;
              end
              if is_err_hxj(hxj1)
-                set(obj.edt_echo, 'string',  '航向角超出范围，应为[0, 360]，请重新设置！');
+                set(obj.edt_echo, 'string',  '卫星航向角超出范围，应为[0, 360]，请重新设置！');
                 return;
              end
              if is_err_gl(power1)
-                set(obj.edt_echo, 'string',  '功率超出范围，应为[0, 100]，请重新设置！');
+                set(obj.edt_echo, 'string',  '卫星功率超出范围，应为[0, 100]，请重新设置！');
                 return;
              end
              if isnan(tx_num_edit)
-                set(obj.edt_echo, 'string',  '天线数量必须为数字，请重新设置！');
+                set(obj.edt_echo, 'string',  '卫星天线数量必须为数字，请重新设置！');
                 return;
              elseif tx_num_edit<0||tx_num_edit>10
-                set(obj.edt_echo, 'string',  '天线数量必须为数字，应为[0, 10]，请重新设置！');
+                set(obj.edt_echo, 'string',  '卫星天线数量必须为数字，应为[0, 10]，请重新设置！');
                 return;
              end
              
              if isnan(txbs_width_edit)
-                set(obj.edt_echo, 'string',  '天线波速宽度必须为数字，请重新设置！');
+                set(obj.edt_echo, 'string', '卫星天线波速宽度必须为数字，请重新设置！');
                 return;
              elseif txbs_width_edit<0
-                set(obj.edt_echo, 'string',  '天线波速宽度必须为正数，请重新设置！');
+                set(obj.edt_echo, 'string', '卫星天线波速宽度必须为正数，请重新设置！');
                 return;
              end
              
