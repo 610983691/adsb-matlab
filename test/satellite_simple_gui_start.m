@@ -95,15 +95,7 @@ classdef satellite_simple_gui_start < handle
         wx_gaosi_erea2_sub1;
         wx_gaosi_erea2_sub2;
         
-        % 卫星panel各个字段
-        wx_lat;
-        wx_lon;
-        wx_high;
-        wx_tx_power;%天线功率
-        wx_hxj;
-        wx_speed;
-        wx_tx_num;%天线数量
-        wx_txbs_width;%天线波束宽度
+  
         
         %卫星panel各个字段的label定义和文本框定义
          wx_lat_txt;
@@ -585,50 +577,42 @@ classdef satellite_simple_gui_start < handle
      
       
         
-        % Callback function for automatic configuration button.
+        % 自动配置并运行仿真的按钮点击回调
         function result =button_auto_config_callback(obj, source, eventdata)
+            %校验卫星的8个参数
             if check_wx_param(obj)==0
                  return;
             end
-            
-            if isempty(get(obj.plane_num_edt, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
-                return;
+            %校验飞机随机数量和仿真时长 
+            if check_plane_num_times(obj)==0
+                return ;
             end
+            fnum = str2double(get(obj.plane_num_edt, 'string'));%随机均匀分布的飞机个数
+            ftime = str2double(get(obj.plane_edt_times, 'string'));%仿真时长
+            %卫星参数获取
+            lat1 = str2double(get(obj.wx_lat_edit, 'string'));
+            lat1=lat1+90;%转为0-180
+            lon1 = str2double(get(obj.wx_lon_edit, 'string'));
+            lon1=lon1+180;%转为0-360
+            high1 = str2double(get(obj.wx_high_edit, 'string'));
+            power1 = str2double(get(obj.wx_tx_power_edit, 'string'));
+            hxj1 = str2double(get(obj.wx_hxj_edit, 'string'));
+            hxj1=hxj1*pi/180;% 改为pi的形式
+            speed1 = str2double(get(obj.wx_speed_edit, 'string'));
+            tx_num_edit = str2double(get(obj.wx_tx_num_edit, 'string'));
+            txbs_width_edit = str2double(get(obj.wx_txbs_width_edit, 'string'));
             
-            if isempty(get(obj.plane_edt_times, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
-                return;
-            end
+             %高斯分布参数获取
+            goss_num = [str2double(get(obj.gaosi_plane_num_edit_1, 'string')),str2double(get(obj.gaosi_plane_num_edit_2, 'string'))];
+            goss = str2double(get(obj.wx_lon_edit, 'string'));
             
-            fnum = str2double(get(obj.plane_num_edt, 'string'));
-            if isnan(fnum)
-                set(obj.edt_echo, 'string', '设置的飞机数量中包含非法字符，应为正整数，请重新设置！');
-                return;
-            elseif ~isempty(find(get(obj.plane_num_edt, 'string') == '.', 1))
-                set(obj.edt_echo, 'string', '设置的飞机数量为小数，应为正整数，请重新设置！');
-                return;
-            elseif fnum <= 0 || fnum > 100
-                set(obj.edt_echo, 'string', '设置的飞机数量超出范围，应为(0, 100]，请重新设置！');
-                return;
-            end
-            
-            ftime = str2double(get(obj.plane_edt_times, 'string'));
-            if isnan(ftime)
-                set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
-                return;
-            elseif ftime <= 0 || ftime > 60
-                set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
-                return;
-            end
             % 接下来需要调用随机方法生成随机的飞机信息矩阵
-            set(obj.edt_echo, 'string', '正在进行仿真...');
+            set(obj.edt_echo, 'string', '正在获取飞机参数...');
   
-            planes= PlaneDistribute1(fnum);
-            
-
+            planes= PlaneDistribute(lon1,lat1,high1,fnum,goss_num,goss);
             set(obj.edt_echo, 'string', '正在进行仿真...');
-            % 接下来调用紫童的方法传递参数，进行仿真
+            %调用主函数
+            signal_main_tj(planes,ftime,lon1,lat1,high1,speed1,hxj1,tx_num_edit,power1,txbs_width_edit);
  
             set(obj.edt_echo, 'string', '仿真结束');
           
@@ -640,12 +624,25 @@ classdef satellite_simple_gui_start < handle
             if check_wx_param(obj)==0
                  return;
             end
-             %校验飞行时间参数
-              ftime = str2double(get(obj.plane_edt_times, 'string'));
+             %校验仿真时长参数
+            ftime = str2double(get(obj.plane_edt_times, 'string'));
             if is_err_time(ftime)
-                set(obj.edt_echo, 'string', '仿真时间必须在[0,60]秒，请重新设置！');
+                set(obj.edt_echo, 'string', '仿真时长必须在[0,60]秒，请重新设置！');
                 return
             end
+             %卫星参数获取
+            wx_lat = str2double(get(obj.wx_lat_edit, 'string'));
+            wx_lat=wx_lat+90;%转为0-180
+            wx_lon = str2double(get(obj.wx_lon_edit, 'string'));
+            wx_lon=wx_lon+180;%转为0-360
+            wx_high = str2double(get(obj.wx_high_edit, 'string'));
+            wx_power = str2double(get(obj.wx_tx_power_edit, 'string'));
+            wx_hxj = str2double(get(obj.wx_hxj_edit, 'string'));
+            wx_hxj=wx_hxj*pi/180;% 改为pi的形式
+            wx_speed = str2double(get(obj.wx_speed_edit, 'string'));
+            tx_num_edit = str2double(get(obj.wx_tx_num_edit, 'string'));
+            txbs_width_edit = str2double(get(obj.wx_txbs_width_edit, 'string'));
+            
             % 用户输入的飞机一的参数
             lat1=str2double(get(obj.plane_edt_lat1, 'string'));
             lon1=str2double(get(obj.plane_edt_lon1, 'string'));
@@ -667,19 +664,22 @@ classdef satellite_simple_gui_start < handle
             speed3=str2double(get(obj.plane_edt_vh3, 'string'));
             hxj3=str2double(get(obj.plane_edt_az3, 'string'));
             power3=str2double(get(obj.plane_edt_pw3, 'string'));
-            
-          
-
             % 校验飞机1参数
             if check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,'一')==0
                 return ;
             end
+             lat1=lat1+90;
+             lon1=lon1+180;
+             hxj1=hxj1*pi/180;
              plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
              %飞机2不为空,就需要校验参数，并且把参数合并到飞机1.2中
             if ~plane2isempty(obj)
                 if check_plane_1(obj,lon2,lat2,high2,speed2,hxj2,power2,'二')==0
                     return ;
                 else
+                    lat2=lat2+90;
+                    lon2=lon2+180;
+                    hxj2=hxj2*pi/180;
                     plane2 = createPlane(obj,lon2,lat2,high2,speed2,hxj2,power2);
                 end
             end
@@ -689,6 +689,9 @@ classdef satellite_simple_gui_start < handle
                  if check_plane_1(obj,lon3,lat3,high3,speed3,hxj3,power3,'三')==0
                     return ;
                  else
+                    lat3=lat3+90;
+                    lon3=lon3+180;
+                    hxj3=hxj3*pi/180;
                     plane3 = createPlane(obj,lon3,lat3,high3,speed3,hxj3,power3);
                 end
             end
@@ -703,11 +706,10 @@ classdef satellite_simple_gui_start < handle
             else
                 planes=plane1;
             end
-          
-            
             set(obj.edt_echo, 'string', '正在运行“多架飞机ADS-B信号模拟程序”...');
             pause(0.3);
-      
+            %调用主函数
+            signal_main_tj(planes,ftime,wx_lon,wx_lat,wx_high,wx_speed,wx_hxj,tx_num_edit,wx_power,txbs_width_edit);
             set(obj.edt_echo, 'string', '“多架飞机ADS-B信号模拟程序”运行完毕！');
         end
         
@@ -788,7 +790,7 @@ classdef satellite_simple_gui_start < handle
             end
             
             if isempty(get(obj.plane_edt_times, 'string'))
-                set(obj.edt_echo, 'string', '尚未设置飞行时间，请先设置飞行时间！');
+                set(obj.edt_echo, 'string', '尚未设置仿真时长，请先设置仿真时长！');
                 return ;
             end
             
@@ -806,10 +808,10 @@ classdef satellite_simple_gui_start < handle
             
             ftime = str2double(get(obj.plane_edt_times, 'string'));
             if isnan(ftime)
-                set(obj.edt_echo, 'string', '设置的飞行时间中包含非法字符，应为数值，请重新设置！');
+                set(obj.edt_echo, 'string', '设置的仿真时长中包含非法字符，应为数值，请重新设置！');
                 return ;
             elseif ftime <= 0 || ftime > 60
-                set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
+                set(obj.edt_echo, 'string', '设置的仿真时长超出范围，应为(0, 60]，请重新设置！');
                 return ;
             end
             s=1;
