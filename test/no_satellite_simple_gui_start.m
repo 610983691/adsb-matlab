@@ -469,8 +469,10 @@ classdef no_satellite_simple_gui_start < handle
             if check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,'一')==0
                 return ;
             end
-            lon1=lon1+180;
-            lat1=lat1+90;
+            if lon1<0
+                lon1=lon1+360; 
+            end
+            lat1=90-lat1;
             hxj1=hxj1*pi/180;
              plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
              %飞机2不为空,就需要校验参数，并且把参数合并到飞机1.2中
@@ -478,8 +480,10 @@ classdef no_satellite_simple_gui_start < handle
                 if check_plane_1(obj,lon2,lat2,high2,speed2,hxj2,power2,'二')==0
                     return ;
                 else
-                    lon2=lon2+180;
-                    lat2=lat2+90;
+                    if lon2<0
+                        lon2=lon2+360; 
+                    end
+                    lat2=90-lat2;
                     hxj2=hxj2*pi/180;
                     plane2 = createPlane(obj,lon2,lat2,high2,speed2,hxj2,power2);
                 end
@@ -490,8 +494,10 @@ classdef no_satellite_simple_gui_start < handle
                  if check_plane_1(obj,lon3,lat3,high3,speed3,hxj3,power3,'三')==0
                     return ;
                  else
-                     lon3=lon3+180;
-                    lat3=lat3+90;
+                    if lon3<0
+                        lon3=lon3+360; 
+                    end
+                    lat3=90-lat3;
                     hxj3=hxj3*pi/180;
                     plane3 = createPlane(obj,lon3,lat3,high3,speed3,hxj3,power3);
                 end
