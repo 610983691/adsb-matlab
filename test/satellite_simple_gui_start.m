@@ -729,6 +729,7 @@ classdef satellite_simple_gui_start < handle
                  lon1=360+lon1;
              end
              hxj1=hxj1*pi/180;
+             speed1 = speed1/3600;
              plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
              %飞机2不为空,就需要校验参数，并且把参数合并到飞机1.2中
             if ~plane2isempty(obj)
@@ -740,6 +741,7 @@ classdef satellite_simple_gui_start < handle
                          lon2=360+lon2;
                      end
                     hxj2=hxj2*pi/180;
+                    speed2=speed2/3600;
                     plane2 = createPlane(obj,lon2,lat2,high2,speed2,hxj2,power2);
                 end
             end
@@ -754,6 +756,7 @@ classdef satellite_simple_gui_start < handle
                          lon3=360+lon3;
                      end
                     hxj3=hxj3*pi/180;
+                    speed3=speed3/3600;
                     plane3 = createPlane(obj,lon3,lat3,high3,speed3,hxj3,power3);
                 end
             end
