@@ -179,7 +179,7 @@ classdef satellite_simple_gui_start < handle
             % Init the Longtitude text for the plane.
             obj.wx_lon_txt = uicontrol('parent', obj.wx_panel_erea, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','起始经度(E,度)','position',[2+(txt_area_width_label+edit_area_width) 60 ...
+                'string','起始经度','position',[2+(txt_area_width_label+edit_area_width) 60 ...
                 txt_area_width_label 40]);
             obj.wx_lon_edit = uicontrol('parent', obj.wx_panel_erea, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -349,7 +349,7 @@ classdef satellite_simple_gui_start < handle
             % Init the Lattitude text for plane param.
             obj.plane_txt_lat1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','起始纬度(N,度)','position',[0 0 ...
+                'string','起始纬度','position',[0 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_lat1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -359,7 +359,7 @@ classdef satellite_simple_gui_start < handle
             % Init the Longtitude text for the plane.
             obj.plane_txt_lon1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','起始经度(E,度)','position',[2+(txt_area_width_label+edit_area_width) 0 ...
+                'string','起始经度','position',[2+(txt_area_width_label+edit_area_width) 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_lon1 = uicontrol('parent', obj.panel_plane_1, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -418,7 +418,7 @@ classdef satellite_simple_gui_start < handle
             % Init the Lattitude text for plane param.
             obj.plane_txt_lat2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','起始纬度(N,度)','position',[0 0 ...
+                'string','起始纬度','position',[0 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_lat2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -428,7 +428,7 @@ classdef satellite_simple_gui_start < handle
             % Init the Longtitude text for the plane.
             obj.plane_txt_lon2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','起始经度(E,度)','position',[2+(txt_area_width_label+edit_area_width) 0 ...
+                'string','起始经度','position',[2+(txt_area_width_label+edit_area_width) 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_lon2 = uicontrol('parent',obj.panel_plane_2, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -486,7 +486,7 @@ classdef satellite_simple_gui_start < handle
             % Init the Lattitude text for plane param.
             obj.plane_txt_lat3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','起始纬度(N,度)','position',[0 0 ...
+                'string','起始纬度','position',[0 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_lat3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -496,7 +496,7 @@ classdef satellite_simple_gui_start < handle
             % Init the Longtitude text for the plane.
             obj.plane_txt_lon3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 11, ...
-                'string','起始经度(E,度)','position',[2+(txt_area_width_label+edit_area_width) 0 ...
+                'string','起始经度','position',[2+(txt_area_width_label+edit_area_width) 0 ...
                 txt_area_width_label 40]);
             obj.plane_edt_lon3 = uicontrol('parent',obj.panel_plane_3, 'style', ...
                 'edit', 'BackgroundColor','white'...
@@ -579,6 +579,7 @@ classdef satellite_simple_gui_start < handle
         
         % 自动配置并运行仿真的按钮点击回调
         function result =button_auto_config_callback(obj, source, eventdata)
+            set(obj.edt_echo, 'string', '准备运行自动配置仿真数据...');
             %校验卫星的8个参数
             if check_wx_param(obj)==0
                  return;
@@ -590,11 +591,11 @@ classdef satellite_simple_gui_start < handle
             fnum = str2double(get(obj.plane_num_edt, 'string'));%随机均匀分布的飞机个数
             ftime = str2double(get(obj.plane_edt_times, 'string'));%仿真时长
             %卫星参数获取
-            lat1 = str2double(get(obj.wx_lat_edit, 'string'));
-            lat1=90-lat1;%转为0-180
-            lon1 = str2double(get(obj.wx_lon_edit, 'string'));
-            if lon1<0
-                lon1=lon1+360;%转为0-360
+            wx_lat = str2double(get(obj.wx_lat_edit, 'string'));
+            wx_lat=90-wx_lat;%转为0-180
+            wx_lon = str2double(get(obj.wx_lon_edit, 'string'));
+            if wx_lon<0
+                wx_lon=wx_lon+360;%转为0-360
             end
             high1 = str2double(get(obj.wx_high_edit, 'string'));
             power1 = str2double(get(obj.wx_tx_power_edit, 'string'));
@@ -619,14 +620,7 @@ classdef satellite_simple_gui_start < handle
                  set(obj.edt_echo, 'string', '高斯分布参数1,经度度必须为[-180,180].');
                  return;
               end
-              if is_err_lat(gaosi_lat2)
-                 set(obj.edt_echo, 'string','高斯分布参数2,纬度必须为[-90,90].');
-                 return;
-              end
-              if is_err_lon(gaosi_lon2)
-                 set(obj.edt_echo, 'string', '高斯分布参数2,经度必须为[-180,180].');
-                 return;
-             end
+              
              % 设置高斯分布参数
              if gaosi_center1_isempty(obj)&&gaosi_center2_isempty(obj)
                    set(obj.edt_echo, 'string', '高斯分布参数不能为空.');
@@ -639,13 +633,17 @@ classdef satellite_simple_gui_start < handle
                  gaosi_lat1=90-gaosi_lat1;
                  goss =[gaosi_lon1,gaosi_lat1];
              elseif  gaosi_center1_isempty(obj) && ~gaosi_center2_isempty(obj)
-                 goss_num_arr=[str2double(get(obj.gaosi_plane_num_edit_2, 'string'))];
-                  if gaosi_lon2<0
-                    gaosi_lon2=gaosi_lon2+360;
-                 end
-                 gaosi_lat2=90-gaosi_lat2;
-                 goss =[gaosi_lon2,gaosi_lat2];
+                  set(obj.edt_echo, 'string', '高斯分布1参数不能为空.');
+                 return ;
              else
+                 if is_err_lat(gaosi_lat2)
+                     set(obj.edt_echo, 'string', '高斯分布参数2,纬度必须为[-90,90].');
+                     return;
+                 end
+                  if is_err_lon(gaosi_lon2)
+                     set(obj.edt_echo, 'string', '高斯分布参数2,经度度必须为[-180,180].');
+                     return;
+                  end
                   goss_num_arr = [str2double(get(obj.gaosi_plane_num_edit_1, 'string')),str2double(get(obj.gaosi_plane_num_edit_2, 'string'))];
                    if gaosi_lon1<0
                     gaosi_lon1=gaosi_lon1+360;
@@ -664,10 +662,10 @@ classdef satellite_simple_gui_start < handle
             % 接下来需要调用随机方法生成随机的飞机信息矩阵
             set(obj.edt_echo, 'string', '正在获取飞机参数...');
   
-            planes= PlaneDistribute(lon1,lat1,high1,fnum,goss_num_arr,goss);
+            planes= PlaneDistribute(wx_lon,wx_lat,high1,fnum,goss_num_arr,goss);
             set(obj.edt_echo, 'string', '正在进行仿真...');
             %调用主函数
-            signal_main_tj(planes,ftime,lon1,lat1,high1,speed1,hxj1,tx_num_edit,power1,txbs_width_edit);
+            signal_main_tj(planes,ftime,wx_lon,wx_lat,high1,speed1,hxj1,tx_num_edit,power1,txbs_width_edit);
  
             set(obj.edt_echo, 'string', '仿真结束');
           
@@ -676,6 +674,7 @@ classdef satellite_simple_gui_start < handle
         
         % Callback function for button start.
         function result =button_start_callback(obj, source, eventdata)
+            set(obj.edt_echo, 'string', '准备运行“多架飞机ADS-B信号模拟程序”...');
             if check_wx_param(obj)==0
                  return;
             end
@@ -916,14 +915,14 @@ classdef satellite_simple_gui_start < handle
         function s = check_wx_param(obj)
             s=0;
         
-        lat1 = str2double(get(obj.wx_lat_edit, 'string'));
-        lon1 = str2double(get(obj.wx_lon_edit, 'string'));
-        high1 = str2double(get(obj.wx_high_edit, 'string'));
-        power1 = str2double(get(obj.wx_tx_power_edit, 'string'));
-        hxj1 = str2double(get(obj.wx_hxj_edit, 'string'));
-        speed1 = str2double(get(obj.wx_speed_edit, 'string'));
-        tx_num_edit = str2double(get(obj.wx_tx_num_edit, 'string'));
-        txbs_width_edit = str2double(get(obj.wx_txbs_width_edit, 'string'));
+            lat1 = str2double(get(obj.wx_lat_edit, 'string'));
+            lon1 = str2double(get(obj.wx_lon_edit, 'string'));
+            high1 = str2double(get(obj.wx_high_edit, 'string'));
+            power1 = str2double(get(obj.wx_tx_power_edit, 'string'));
+            hxj1 = str2double(get(obj.wx_hxj_edit, 'string'));
+            speed1 = str2double(get(obj.wx_speed_edit, 'string'));
+            tx_num_edit = str2double(get(obj.wx_tx_num_edit, 'string'));
+            txbs_width_edit = str2double(get(obj.wx_txbs_width_edit, 'string'));
             if is_err_lat(lat1)
                 set(obj.edt_echo, 'string', '卫星纬度度超出范围，应为[-90, 90]，请重新设置！');
                 return;
