@@ -610,6 +610,24 @@ classdef satellite_simple_gui_start < handle
              gaosi_lat2=str2double(get(obj.gaosi_center_lat_edit_2, 'string'));
              gaosi_lon2=str2double(get(obj.gaosi_center_lon_edit_2, 'string'));
          
+             %校验高斯分布的经纬度
+             if is_err_lat(gaosi_lat1)
+                 set(obj.edt_echo, 'string', '高斯分布参数1,纬度必须为[-90,90].');
+                 return;
+             end
+              if is_err_lon(gaosi_lon1)
+                 set(obj.edt_echo, 'string', '高斯分布参数1,经度度必须为[-180,180].');
+                 return;
+              end
+              if is_err_lat(gaosi_lat2)
+                 set(obj.edt_echo, 'string','高斯分布参数2,纬度必须为[-90,90].');
+                 return;
+              end
+              if is_err_lon(gaosi_lon2)
+                 set(obj.edt_echo, 'string', '高斯分布参数2,经度必须为[-180,180].');
+                 return;
+             end
+             % 设置高斯分布参数
              if gaosi_center1_isempty(obj)&&gaosi_center2_isempty(obj)
                    set(obj.edt_echo, 'string', '高斯分布参数不能为空.');
                  return ;
