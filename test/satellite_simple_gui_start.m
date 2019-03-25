@@ -591,9 +591,11 @@ classdef satellite_simple_gui_start < handle
             ftime = str2double(get(obj.plane_edt_times, 'string'));%仿真时长
             %卫星参数获取
             lat1 = str2double(get(obj.wx_lat_edit, 'string'));
-            lat1=lat1+90;%转为0-180
+            lat1=90-lat1;%转为0-180
             lon1 = str2double(get(obj.wx_lon_edit, 'string'));
-            lon1=lon1+180;%转为0-360
+            if lon1<0
+                lon1=lon1+360;%转为0-360
+            end
             high1 = str2double(get(obj.wx_high_edit, 'string'));
             power1 = str2double(get(obj.wx_tx_power_edit, 'string'));
             hxj1 = str2double(get(obj.wx_hxj_edit, 'string'));
@@ -603,13 +605,48 @@ classdef satellite_simple_gui_start < handle
             txbs_width_edit = str2double(get(obj.wx_txbs_width_edit, 'string'));
             
              %高斯分布参数获取
-            goss_num = [str2double(get(obj.gaosi_plane_num_edit_1, 'string')),str2double(get(obj.gaosi_plane_num_edit_2, 'string'))];
-            goss = str2double(get(obj.wx_lon_edit, 'string'));
-            
+             gaosi_lat1=str2double(get(obj.gaosi_center_lat_edit_1, 'string'));
+             gaosi_lon1=str2double(get(obj.gaosi_center_lon_edit_1, 'string'));
+             gaosi_lat2=str2double(get(obj.gaosi_center_lat_edit_2, 'string'));
+             gaosi_lon2=str2double(get(obj.gaosi_center_lon_edit_2, 'string'));
+         
+             if gaosi_center1_isempty(obj)&&gaosi_center2_isempty(obj)
+                   set(obj.edt_echo, 'string', '高斯分布参数不能为空.');
+                 return ;
+             elseif ~gaosi_center1_isempty(obj) && gaosi_center2_isempty(obj)
+                 goss_num_arr=[str2double(get(obj.gaosi_plane_num_edit_1, 'string'))];
+                 if gaosi_lon1<0
+                    gaosi_lon1=gaosi_lon1+360;
+                 end
+                 gaosi_lat1=90-gaosi_lat1;
+                 goss =[gaosi_lon1,gaosi_lat1];
+             elseif  gaosi_center1_isempty(obj) && ~gaosi_center2_isempty(obj)
+                 goss_num_arr=[str2double(get(obj.gaosi_plane_num_edit_2, 'string'))];
+                  if gaosi_lon2<0
+                    gaosi_lon2=gaosi_lon2+360;
+                 end
+                 gaosi_lat2=90-gaosi_lat2;
+                 goss =[gaosi_lon2,gaosi_lat2];
+             else
+                  goss_num_arr = [str2double(get(obj.gaosi_plane_num_edit_1, 'string')),str2double(get(obj.gaosi_plane_num_edit_2, 'string'))];
+                   if gaosi_lon1<0
+                    gaosi_lon1=gaosi_lon1+360;
+                   end
+                   gaosi_lat1=90-gaosi_lat1;
+                   goss1 =[gaosi_lon1,gaosi_lat1]; 
+
+                   if gaosi_lon2<0
+                        gaosi_lon2=gaosi_lon2+360;
+                   end
+                   gaosi_lat2=90-gaosi_lat2;
+                   goss2 =[gaosi_lon2,gaosi_lat2];
+                   goss=[goss1;goss2];
+             end
+
             % 接下来需要调用随机方法生成随机的飞机信息矩阵
             set(obj.edt_echo, 'string', '正在获取飞机参数...');
   
-            planes= PlaneDistribute(lon1,lat1,high1,fnum,goss_num,goss);
+            planes= PlaneDistribute(lon1,lat1,high1,fnum,goss_num_arr,goss);
             set(obj.edt_echo, 'string', '正在进行仿真...');
             %调用主函数
             signal_main_tj(planes,ftime,lon1,lat1,high1,speed1,hxj1,tx_num_edit,power1,txbs_width_edit);
@@ -632,9 +669,11 @@ classdef satellite_simple_gui_start < handle
             end
              %卫星参数获取
             wx_lat = str2double(get(obj.wx_lat_edit, 'string'));
-            wx_lat=wx_lat+90;%转为0-180
+            wx_lat=90-wx_lat;%转为0-180
             wx_lon = str2double(get(obj.wx_lon_edit, 'string'));
-            wx_lon=wx_lon+180;%转为0-360
+            if wx_lon<0
+               wx_lon=wx_lon+360;%转为0-360
+            end
             wx_high = str2double(get(obj.wx_high_edit, 'string'));
             wx_power = str2double(get(obj.wx_tx_power_edit, 'string'));
             wx_hxj = str2double(get(obj.wx_hxj_edit, 'string'));
@@ -668,8 +707,10 @@ classdef satellite_simple_gui_start < handle
             if check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,'一')==0
                 return ;
             end
-             lat1=lat1+90;
-             lon1=lon1+180;
+             lat1=90-lat1;
+             if lon1<0
+                 lon1=360+lon1;
+             end
              hxj1=hxj1*pi/180;
              plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
              %飞机2不为空,就需要校验参数，并且把参数合并到飞机1.2中
@@ -677,8 +718,10 @@ classdef satellite_simple_gui_start < handle
                 if check_plane_1(obj,lon2,lat2,high2,speed2,hxj2,power2,'二')==0
                     return ;
                 else
-                    lat2=lat2+90;
-                    lon2=lon2+180;
+                    lat2=90-lat2;
+                     if lon2<0
+                         lon2=360+lon2;
+                     end
                     hxj2=hxj2*pi/180;
                     plane2 = createPlane(obj,lon2,lat2,high2,speed2,hxj2,power2);
                 end
@@ -689,8 +732,10 @@ classdef satellite_simple_gui_start < handle
                  if check_plane_1(obj,lon3,lat3,high3,speed3,hxj3,power3,'三')==0
                     return ;
                  else
-                    lat3=lat3+90;
-                    lon3=lon3+180;
+                     lat3=90-lat3;
+                     if lon3<0
+                         lon3=360+lon3;
+                     end
                     hxj3=hxj3*pi/180;
                     plane3 = createPlane(obj,lon3,lat3,high3,speed3,hxj3,power3);
                 end
@@ -911,7 +956,41 @@ classdef satellite_simple_gui_start < handle
         end
         
         
-        %创建随机的飞机位置
+          % 校验高斯中心参数是否为空
+        function s = gaosi_center1_isempty(obj)      
+             s=1;
+             if ~isempty(get(obj.gaosi_center_lat_edit_1, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.gaosi_center_lon_edit_1, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.gaosi_plane_num_edit_1, 'string'))
+                 s=0;
+                 return;
+             end
+        end
+        
+         % 校验高斯中心2参数是否为空
+        function s = gaosi_center2_isempty(obj)      
+             s=1;
+             if ~isempty(get(obj.gaosi_center_lat_edit_2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.gaosi_center_lon_edit_2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.gaosi_plane_num_edit_2, 'string'))
+                 s=0;
+                 return;
+             end
+        end
+        
+        %创建飞机位置
         function plane = createPlane(obj,lon,lat,high,speed,hxj,power)
                 plane = zeros(6,1);
  
