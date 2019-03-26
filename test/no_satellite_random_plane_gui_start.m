@@ -49,7 +49,7 @@ classdef no_satellite_random_plane_gui_start < handle
        
         %------自动配置区域的功率
         plane_txt_auto_power;
-        plane_edit_auto_power;
+        plane_edt_auto_power;
         
         % Text handle for plane param, Lattitude, Longtitude, and height.
         plane_txt_lat1,plane_txt_lat2,plane_txt_lat3;
@@ -147,32 +147,28 @@ classdef no_satellite_random_plane_gui_start < handle
                 'edit', 'BackgroundColor','white' ...
               ,'Fontsize',11,'position',[1+txt_area_width_label obj.panel_height/3 ...
               edit_area_width 40]);
-          
-          
+            set(obj.plane_num_edt, 'string', '10');
              % Init 报文功率
             obj.plane_txt_auto_power = uicontrol('parent', obj.panel_auto_config, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 12, ...
-                'string','报文功率（dbm）','position',[2+(txt_area_width_label+edit_area_width) ...
+                'string','报文功率（dbm）','position',[2+(2*txt_area_width_label+edit_area_width) ...
                 (obj.panel_height/3 -10) txt_area_width_label 40]);
-            obj.plane_edit_auto_power = uicontrol('parent', obj.panel_auto_config, 'style', ...
+            obj.plane_edt_auto_power = uicontrol('parent', obj.panel_auto_config, 'style', ...
                 'edit', 'BackgroundColor','white' ...
-              ,'Fontsize',11,'position',[3+(2*txt_area_width_label+edit_area_width) obj.panel_height/3 ...
+              ,'Fontsize',11,'position',[3+(3*txt_area_width_label+edit_area_width) obj.panel_height/3 ...
               edit_area_width 40]);
+             set(obj.plane_edt_auto_power, 'string', '57');
           
-          
-
-                   
-            
                % Init 仿真时长
             obj.plane_txt_times = uicontrol('parent', obj.panel_auto_config, 'style', ...
                 'text', 'BackgroundColor', [0.83 0.82 0.78], 'Fontsize', 12, ...
-                'string','仿真时长(s)','position',[7+(4*txt_area_width_label+3*edit_area_width) ...
+                'string','仿真时长(s)','position',[6+(4*txt_area_width_label+2*edit_area_width) ...
                 (obj.panel_height/3 -10) txt_area_width_label 40]);
             obj.plane_edt_times = uicontrol('parent', obj.panel_auto_config, 'style', ...
                 'edit', 'BackgroundColor','white' ...
-              ,'Fontsize',11,'position',[8+(4*txt_area_width_label+4*edit_area_width) obj.panel_height/3 ...
+              ,'Fontsize',11,'position',[7+(5*txt_area_width_label+2*edit_area_width) obj.panel_height/3 ...
               edit_area_width 40]);
-            
+            set(obj.plane_edt_times, 'string', '10');
          
 
           
@@ -180,7 +176,7 @@ classdef no_satellite_random_plane_gui_start < handle
            obj.panel_plane_start = uipanel('parent', obj.gui_p, 'Units', ...
                 'pixels', 'BackgroundColor', [0.83, 0.82, 0.78], 'title', ...
                 '程序运行区域', 'Fontsize', 15, 'Position', [25, ...
-                obj.gui_height - 5*obj.panel_height , obj.panel_width-10, ...
+                obj.gui_height - 2*obj.panel_height-50 , obj.panel_width-10, ...
                 obj.panel_height]);
             % panle位置设置
       
@@ -219,11 +215,12 @@ classdef no_satellite_random_plane_gui_start < handle
         % Callback function for button start.
         function result =button_start_callback(obj, source, eventdata)
               set(obj.edt_echo, 'string', '准备进行仿真...');
-           if check_plane_num_times(obj)==0
+           if check_plane_param(obj)==0
                 return ;
            end
             ftime = str2double(get(obj.plane_edt_times, 'string'));
             fnum = str2double(get(obj.plane_num_edt, 'string'));
+            plane_power = str2double(get(obj.plane_edt_auto_power, 'string'));%报文功率
             % 接下来需要调用随机方法生成随机的飞机信息矩阵
             set(obj.edt_echo, 'string', '正在获取飞机参数...');
   
@@ -257,65 +254,10 @@ classdef no_satellite_random_plane_gui_start < handle
             clc;
         end
         
-        % 判断飞机二的参数是不是都为空
-         function s= plane2isempty(obj)
-             s=1;
-             if ~isempty(get(obj.plane_edt_lat2, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_lon2, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_alt2, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_vh2, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_az2, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_pw2, 'string'))
-                 s=0;
-                 return;
-             end
-         end
-         % 判断飞机三的参数是不是都为空
-          function s= plane3isempty(obj)
-             s=1;
-             if ~isempty(get(obj.plane_edt_lat3, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_lon3, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_alt3, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_vh3, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_az3, 'string'))
-                 s=0;
-                 return;
-             end
-             if ~isempty(get(obj.plane_edt_pw3, 'string'))
-                 s=0;
-                 return;
-             end
-         end
+       
         
          % 校验飞机数量和仿真时间
-        function s= check_plane_num_times(obj)
+        function s= check_plane_param(obj)
             s=0;
             if isempty(get(obj.plane_num_edt, 'string'))
                 set(obj.edt_echo, 'string', '尚未设置飞机数量，请先设置飞机数量！');
@@ -347,41 +289,23 @@ classdef no_satellite_random_plane_gui_start < handle
                 set(obj.edt_echo, 'string', '设置的飞行时间超出范围，应为(0, 60]，请重新设置！');
                 return ;
             end
-            s=1;
+            
+
+             plane_power = str2double(get(obj.plane_edt_auto_power, 'string'));%报文功率
+             if isnan(plane_power)
+                set(obj.edt_echo, 'string', '设置的报文功率中包含非法字符，应为数值，请重新设置！');
+                return ;
+            elseif plane_power <= 0 || plane_power > 1000
+                set(obj.edt_echo, 'string', '设置的报文功率超出范围，应为(0, 1000]，请重新设置！');
+                return ;
+             end
+            
+             %全部校验完了就表明正确返回1
+             s=1;
             return ;
         end
         
-        % 校验飞机的6个参数是否正确
-        function s = check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,num)
-            s=0;
-            str =strcat('设置的飞机',num);
-            if is_err_lat(lat1)
-                set(obj.edt_echo, 'string', strcat(str,'纬度度超出范围，应为[-90, 90]，请重新设置！'));
-                return;
-            end
-             if is_err_lon(lon1)
-                set(obj.edt_echo, 'string', strcat(str,'经度超出范围，应为[-180, 180]，请重新设置！'));
-                return;
-             end
-             if is_err_high(high1)
-                set(obj.edt_echo, 'string',  strcat(str,'高度空层超出范围，应为[1, 12]，请重新设置！'));
-                return;
-             end
-             if is_err_speed(speed1)
-                set(obj.edt_echo, 'string',  strcat(str,'速度超出范围，应为[800, 1000]，请重新设置！'));
-                return;
-             end
-             if is_err_hxj(hxj1)
-                set(obj.edt_echo, 'string',  strcat(str,'航向角超出范围，应为[0, 360]，请重新设置！'));
-                return;
-             end
-             if is_err_gl(power1)
-                set(obj.edt_echo, 'string',  strcat(str,'功率超出范围，应为[0, 100]，请重新设置！'));
-                return;
-             end
-            s=1;
-        end
-        
+    
         %创建飞机信息
         function plane = createPlane(obj,lon,lat,high,speed,hxj,power)
                 plane = zeros(6,1);
