@@ -1,7 +1,7 @@
-classdef no_satellite_single_plane_gui_start < handle
+classdef no_satellite_mul_plane_gui_start < handle
 %% *********************************************************************
 %
-% @file         no_satellite_single_plane_gui_start.m
+% @file         no_satellite_mul_plane_gui_start.m
 % @brief        Class definition for button 2 GUI.
 %
 % ******************************************************************************
@@ -107,7 +107,7 @@ classdef no_satellite_single_plane_gui_start < handle
     
     methods
         % 无卫星的自定义飞机参数模式
-        function obj = no_satellite_single_plane_gui_start(gui_parent)
+        function obj = no_satellite_mul_plane_gui_start(gui_parent)
              obj.gui_parent=gui_parent;
             screen_size = get(0, 'ScreenSize');
             screen_size(screen_size < 100) = [];
@@ -127,7 +127,7 @@ classdef no_satellite_single_plane_gui_start < handle
             % The first row info.
             % Create figure and init.
             obj.gui_p = figure('Color', [0.83, 0.82, 0.78], ...
-                'Numbertitle', 'off', 'Name', '无卫星多飞行器场景仿真程序', ...
+                'Numbertitle', 'off', 'Name', '无卫星场景多飞行器仿真程序', ...
                 'Position', [floor((obj.width - obj.gui_width) / 2), ...
                 floor((obj.height - obj.gui_height) / 2), obj.gui_width, ...
                 obj.gui_height], 'Toolbar', 'none', 'Resize', 'off');
