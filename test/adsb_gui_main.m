@@ -118,7 +118,7 @@ classdef adsb_gui_main < handle
         
         % Callback function for button handle 2.
         function button_2_callback(obj, source, eventdata)
-            obj.gui_child_2 = no_satellite_mul_plane_gui_start(obj);
+            obj.gui_child_2 = no_satellite_random_plane_gui_start(obj);
         end
         
         % Callback function for button handle 3.
