@@ -148,7 +148,7 @@ classdef no_satellite_mul_plane_gui_start < handle
                 'edit', 'BackgroundColor','white' ...
               ,'Fontsize',11,'position',[txt_area_width_label obj.panel_height/3 ...
               edit_area_width 40]);
-            
+            set(obj.plane_edt_times, 'string', '10');
             
             %--------------------panel分隔-------------------------
             
@@ -515,6 +515,9 @@ classdef no_satellite_mul_plane_gui_start < handle
             speed1=str2double(get(obj.plane_edt_vh1, 'string'));
             hxj1=str2double(get(obj.plane_edt_az1, 'string'));
             power1=str2double(get(obj.plane_edt_pw1, 'string'));
+            plane_hy_speed1=str2double(get(obj.plane_edt_hy_speed1, 'string'));
+            plane_icao1=str2double(get(obj.plane_edt_icao1, 'string'));
+            plane_id1=str2double(get(obj.plane_edt_id1, 'string'));
              % 用户输入的飞机二的参数
             lat2=str2double(get(obj.plane_edt_lat2, 'string'));
             lon2=str2double(get(obj.plane_edt_lon2, 'string'));
@@ -522,6 +525,9 @@ classdef no_satellite_mul_plane_gui_start < handle
             speed2=str2double(get(obj.plane_edt_vh2, 'string'));
             hxj2=str2double(get(obj.plane_edt_az2, 'string'));
             power2=str2double(get(obj.plane_edt_pw2, 'string'));
+            plane_hy_speed2=str2double(get(obj.plane_edt_hy_speed2, 'string'));
+            plane_icao2=str2double(get(obj.plane_edt_icao2, 'string'));
+            plane_id2=str2double(get(obj.plane_edt_id2, 'string'));
              % 用户输入的飞机三的参数
             lat3=str2double(get(obj.plane_edt_lat3, 'string'));
             lon3=str2double(get(obj.plane_edt_lon3, 'string'));
@@ -529,9 +535,12 @@ classdef no_satellite_mul_plane_gui_start < handle
             speed3=str2double(get(obj.plane_edt_vh3, 'string'));
             hxj3=str2double(get(obj.plane_edt_az3, 'string'));
             power3=str2double(get(obj.plane_edt_pw3, 'string'));
+            plane_hy_speed3=str2double(get(obj.plane_edt_hy_speed3, 'string'));
+            plane_icao3=str2double(get(obj.plane_edt_icao3, 'string'));
+            plane_id3=str2double(get(obj.plane_edt_id3, 'string'));
 
             % 校验飞机1参数
-            if check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,'一')==0
+            if check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,plane_hy_speed1,plane_icao1,plane_id1,'一')==0
                 return ;
             end
             if lon1<0
@@ -543,7 +552,7 @@ classdef no_satellite_mul_plane_gui_start < handle
              plane1 = createPlane(obj,lon1,lat1,high1,speed1,hxj1,power1);
              %飞机2不为空,就需要校验参数，并且把参数合并到飞机1.2中
             if ~plane2isempty(obj)
-                if check_plane_1(obj,lon2,lat2,high2,speed2,hxj2,power2,'二')==0
+                if check_plane_1(obj,lon2,lat2,high2,speed2,hxj2,power2,plane_hy_speed2,plane_icao2,plane_id2,'二')==0
                     return ;
                 else
                     if lon2<0
@@ -558,7 +567,7 @@ classdef no_satellite_mul_plane_gui_start < handle
             
             %飞机3不为空,就需要校验参数，并且把参数合并到飞机1.2中
             if ~plane3isempty(obj)
-                 if check_plane_1(obj,lon3,lat3,high3,speed3,hxj3,power3,'三')==0
+                 if check_plane_1(obj,lon3,lat3,high3,speed3,hxj3,power3,plane_hy_speed3,plane_icao3,plane_id3,'三')==0
                     return ;
                  else
                     if lon3<0
@@ -639,6 +648,18 @@ classdef no_satellite_mul_plane_gui_start < handle
                  s=0;
                  return;
              end
+             if ~isempty(get(obj.plane_edt_hy_speed2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_icao2, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_id2, 'string'))
+                 s=0;
+                 return;
+             end
          end
          % 判断飞机三的参数是不是都为空
           function s= plane3isempty(obj)
@@ -664,6 +685,18 @@ classdef no_satellite_mul_plane_gui_start < handle
                  return;
              end
              if ~isempty(get(obj.plane_edt_pw3, 'string'))
+                 s=0;
+                 return;
+             end
+              if ~isempty(get(obj.plane_edt_hy_speed3, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_icao3, 'string'))
+                 s=0;
+                 return;
+             end
+             if ~isempty(get(obj.plane_edt_id3, 'string'))
                  s=0;
                  return;
              end
@@ -707,7 +740,7 @@ classdef no_satellite_mul_plane_gui_start < handle
         end
         
         % 校验飞机的6个参数是否正确
-        function s = check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,num)
+        function s = check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,plane_hy_speed,plane_icao,plane_id,num)
             s=0;
             str =strcat('设置的飞机',num);
             if is_err_lat(lat1)
