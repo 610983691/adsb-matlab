@@ -88,7 +88,7 @@ classdef adsb_gui_main < handle
             % Init the button handle 3.
             obj.btn_c3 = uicontrol('parent', obj.gui_p, ...
                 'style', 'pushbutton', 'BackgroundColor', ...
-                [0.83, 0.82, 0.78], 'string', '有卫星场景单飞行器场景仿真及ADS-B信号模拟程序', ...
+                [0.83, 0.82, 0.78], 'string', '有卫星高斯分布场景仿真及ADS-B信号模拟程序', ...
                 'Fontsize', 18, 'position', [obj.gui_width / 4, ...
                 obj.gui_height - 4 * (obj.button_height + obj.space_height), ...
                 obj.gui_width / 2, obj.button_height]);
@@ -123,12 +123,12 @@ classdef adsb_gui_main < handle
         
         % Callback function for button handle 3.
         function button_3_callback(obj, source, eventdata)
-            obj.gui_child_3 = gui_ads_child_3(obj);
+            obj.gui_child_3 = satellite_goss_gui_start(obj);
         end
         
         % Callback function for button handle 4.
         function button_4_callback(obj, source, eventdata)
-            obj.gui_child_4 = gui_ads_child_4(obj);
+            obj.gui_child_4 = satellite_mul_plane_gui_start(obj);
         end
         
         % Callback function for button handle 5.
