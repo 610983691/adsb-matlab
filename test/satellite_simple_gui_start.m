@@ -84,6 +84,12 @@ classdef satellite_simple_gui_start < handle
         plane_lat_result;
         plane_high_result;
         
+        plane_lon_path;
+        plane_lat_path;
+        mess_rec_all;
+        mess_rec_all1;
+        mess_rec_all2;
+        
         % Callback function flag.
         cb_auto_config = 0;
         cb_man_config = 0;
@@ -665,10 +671,18 @@ classdef satellite_simple_gui_start < handle
             planes= PlaneDistribute(wx_lon,wx_lat,high1,fnum,goss_num_arr,goss);
             set(obj.edt_echo, 'string', '正在进行仿真...');
             %调用主函数
-            signal_main_tj(planes,ftime,wx_lon,wx_lat,high1,speed1,hxj1,tx_num_edit,power1,txbs_width_edit);
- 
+            [obj.mess_rec_all,obj.mess_rec_all1,obj.mess_rec_all2,obj.plane_lon_result,obj.plane_lat_result,obj.plane_high_result]=satellite_simple_gui_main(planes,ftime,wx_lon,wx_lat,high1,speed1,hxj1,tx_num_edit,power1,txbs_width_edit);
+            for i = 1:size(obj.plane_lon_result,1)
+               if obj.plane_lon_result(i,1)>180
+                  obj.plane_lon_path(i,:) = obj.plane_lon_result(i,:)-360;
+               else
+                 obj.plane_lon_path(i,:) = obj.plane_lon_result(i,:); 
+               end
+            end
+           obj.plane_lat_path = 90-obj.plane_lat_result;
             set(obj.edt_echo, 'string', '仿真结束');
-          
+            write_lat_data_2_file(obj.plane_lat_path);
+            write_lon_data_2_file(obj.plane_lon_path);
         end
         
         
@@ -774,7 +788,17 @@ classdef satellite_simple_gui_start < handle
             set(obj.edt_echo, 'string', '正在运行“多架飞机ADS-B信号模拟程序”...');
             pause(0.3);
             %调用主函数
-            signal_main_tj(planes,ftime,wx_lon,wx_lat,wx_high,wx_speed,wx_hxj,tx_num_edit,wx_power,txbs_width_edit);
+            [obj.mess_rec_all,obj.mess_rec_all1,obj.mess_rec_all2,obj.plane_lon_result,obj.plane_lat_result,obj.plane_high_result]=satellite_simple_gui_main(planes,ftime,wx_lon,wx_lat,wx_high,wx_speed,wx_hxj,tx_num_edit,wx_power,txbs_width_edit);
+            obj.plane_lat_path = 90-obj.plane_lat_result;
+            for i = 1:size(obj.plane_lon_result,1)
+               if obj.plane_lon_result(i,1)>180
+                  obj.plane_lon_path(i,:) = obj.plane_lon_result(i,:)-360;
+               else
+                 obj.plane_lon_path(i,:) = obj.plane_lon_result(i,:); 
+               end
+            end
+            write_lat_data_2_file(obj.plane_lat_path);
+            write_lon_data_2_file(obj.plane_lon_path);
             set(obj.edt_echo, 'string', '“多架飞机ADS-B信号模拟程序”运行完毕！');
         end
         

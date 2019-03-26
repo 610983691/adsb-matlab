@@ -1,11 +1,11 @@
-function write_lon_data_2_file(londata)
+function write_init_lat_data_2_file(latdata)
 
-fid=fopen('lonData.txt','w');
-rows = size(londata,1);
-columns = size(londata,2);
+fid=fopen('initlatData.txt','w');
+rows = size(latdata,1);
+columns = size(latdata,2);
 %遍历row次
 for row = 1:rows
-    one_row_data= londata(row,:);%获取第i行的数据
+    one_row_data= latdata(row,:);%获取第i行的数据
     for col = 1:columns
         data=one_row_data(1,col);%获取一个纬度数据
         fprintf(fid,'%3.12f',data);

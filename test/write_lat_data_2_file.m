@@ -14,6 +14,7 @@ for row = 1:rows
         end
     end
     fprintf(fid,'%s',';');%每行数据数据以;分号分隔
+    fprintf(fid,'\r\n');
 end
 fclose(fid);
 end

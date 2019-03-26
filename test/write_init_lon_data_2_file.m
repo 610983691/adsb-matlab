@@ -1,6 +1,6 @@
-function write_lon_data_2_file(londata)
+function write_init_lon_data_2_file(londata)
 
-fid=fopen('lonData.txt','w');
+fid=fopen('initlonData.txt','w');
 rows = size(londata,1);
 columns = size(londata,2);
 %±éÀúrow´Î
