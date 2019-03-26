@@ -767,6 +767,21 @@ classdef no_satellite_mul_plane_gui_start < handle
                 set(obj.edt_echo, 'string',  strcat(str,'功率超出范围，应为[0, 100]，请重新设置！'));
                 return;
              end
+             if isnan(plane_hy_speed)
+                 set(obj.edt_echo, 'string',  strcat(str,'垂直速度必须是数字！'));
+                return;
+             elseif plane_hy_speed>1000||plane_hy_speed<1000
+                  set(obj.edt_echo, 'string',  strcat(str,'垂直速度应为[-1000, 1000]，请重新设置！'));
+                  return;
+             end
+             if is_not_char_and_num(plane_icao)
+                 set(obj.edt_echo, 'string',  strcat(str,'参数ICAO必须是字母或数字！'));
+                return;
+             end
+             if is_not_char_and_num(plane_id)
+                 set(obj.edt_echo, 'string',  strcat(str,'参数ID必须是字母或数字！'));
+                return;
+             end
             s=1;
         end
         
