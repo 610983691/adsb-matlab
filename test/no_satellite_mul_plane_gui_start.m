@@ -516,8 +516,8 @@ classdef no_satellite_mul_plane_gui_start < handle
             hxj1=str2double(get(obj.plane_edt_az1, 'string'));
             power1=str2double(get(obj.plane_edt_pw1, 'string'));
             plane_hy_speed1=str2double(get(obj.plane_edt_hy_speed1, 'string'));
-            plane_icao1=str2double(get(obj.plane_edt_icao1, 'string'));
-            plane_id1=str2double(get(obj.plane_edt_id1, 'string'));
+            plane_icao1=get(obj.plane_edt_icao1, 'string');
+            plane_id1=get(obj.plane_edt_id1, 'string');
              % 用户输入的飞机二的参数
             lat2=str2double(get(obj.plane_edt_lat2, 'string'));
             lon2=str2double(get(obj.plane_edt_lon2, 'string'));
@@ -526,8 +526,8 @@ classdef no_satellite_mul_plane_gui_start < handle
             hxj2=str2double(get(obj.plane_edt_az2, 'string'));
             power2=str2double(get(obj.plane_edt_pw2, 'string'));
             plane_hy_speed2=str2double(get(obj.plane_edt_hy_speed2, 'string'));
-            plane_icao2=str2double(get(obj.plane_edt_icao2, 'string'));
-            plane_id2=str2double(get(obj.plane_edt_id2, 'string'));
+            plane_icao2=get(obj.plane_edt_icao2, 'string');
+            plane_id2=get(obj.plane_edt_id2, 'string');
              % 用户输入的飞机三的参数
             lat3=str2double(get(obj.plane_edt_lat3, 'string'));
             lon3=str2double(get(obj.plane_edt_lon3, 'string'));
@@ -536,8 +536,8 @@ classdef no_satellite_mul_plane_gui_start < handle
             hxj3=str2double(get(obj.plane_edt_az3, 'string'));
             power3=str2double(get(obj.plane_edt_pw3, 'string'));
             plane_hy_speed3=str2double(get(obj.plane_edt_hy_speed3, 'string'));
-            plane_icao3=str2double(get(obj.plane_edt_icao3, 'string'));
-            plane_id3=str2double(get(obj.plane_edt_id3, 'string'));
+            plane_icao3=get(obj.plane_edt_icao3, 'string');
+            plane_id3=get(obj.plane_edt_id3, 'string');
 
             % 校验飞机1参数
             if check_plane_1(obj,lon1,lat1,high1,speed1,hxj1,power1,plane_hy_speed1,plane_icao1,plane_id1,'一')==0
@@ -770,7 +770,7 @@ classdef no_satellite_mul_plane_gui_start < handle
              if isnan(plane_hy_speed)
                  set(obj.edt_echo, 'string',  strcat(str,'垂直速度必须是数字！'));
                 return;
-             elseif plane_hy_speed>1000||plane_hy_speed<1000
+             elseif plane_hy_speed>1000||plane_hy_speed<-1000
                   set(obj.edt_echo, 'string',  strcat(str,'垂直速度应为[-1000, 1000]，请重新设置！'));
                   return;
              end

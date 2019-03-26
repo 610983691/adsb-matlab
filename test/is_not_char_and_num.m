@@ -3,6 +3,6 @@ o=regexp(str,'^[0-9a-zA-Z]*$','match');
     if size(o)==1
         s=0;
     else
-        s=1
+        s=1;
     end
 end
