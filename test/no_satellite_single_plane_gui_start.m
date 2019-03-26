@@ -115,8 +115,8 @@ classdef no_satellite_single_plane_gui_start < handle
             obj.height = screen_size(2);
             
             % Set the width and height of the GUI.
-            obj.gui_width = obj.width;
-            obj.gui_height = obj.height;
+            obj.gui_width = obj.width-60;
+            obj.gui_height = obj.height-100;
             % Set the plane param settings panel widht and height.
             obj.panel_width = obj.gui_width;
             obj.panel_height = obj.gui_height/5;%panel是5行，所以是panel除以5的高度.
